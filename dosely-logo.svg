@@ -1,0 +1,43 @@
+<svg width="900" height="280" viewBox="0 0 900 280" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Dosely logo">
+  <defs>
+    <linearGradient id="tile2" x1="0" y1="0" x2="220" y2="220" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1FB8A6"/>
+      <stop offset="1" stop-color="#0E8C82"/>
+    </linearGradient>
+    <linearGradient id="capLower2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FF8A6B"/>
+      <stop offset="1" stop-color="#FF6B5E"/>
+    </linearGradient>
+    <filter id="soft2" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="6" stdDeviation="9" flood-color="#063B37" flood-opacity="0.28"/>
+    </filter>
+    <clipPath id="capClip2">
+      <rect x="63" y="93" width="121" height="51" rx="25.5"/>
+    </clipPath>
+  </defs>
+
+  <!-- ICON (scaled ~0.43 of 512) -->
+  <g transform="translate(40 32)">
+    <rect width="220" height="220" rx="50" fill="url(#tile2)"/>
+    <circle cx="64" cy="60" r="95" fill="#FFFFFF" opacity="0.06"/>
+    <g transform="translate(-6 -4) rotate(-45 123 118)" filter="url(#soft2)">
+      <rect x="63" y="93" width="121" height="51" rx="25.5" fill="#FFFFFF"/>
+      <g clip-path="url(#capClip2)">
+        <rect x="123" y="93" width="61" height="51" fill="url(#capLower2)"/>
+      </g>
+      <rect x="121" y="93" width="4" height="51" fill="#0E8C82" opacity="0.16"/>
+      <rect x="73" y="100" width="52" height="9" rx="4.5" fill="#FFFFFF" opacity="0.7"/>
+    </g>
+    <g transform="translate(143 60)">
+      <circle r="27" fill="#0B5A54"/>
+      <circle r="22" fill="#FFFFFF"/>
+      <rect x="-1.8" y="-13" width="3.6" height="15" rx="1.8" fill="#0E8C82"/>
+      <rect x="-11" y="-1.8" width="13" height="3.6" rx="1.8" fill="#FF6B5E"/>
+      <circle r="2.6" fill="#0E8C82"/>
+    </g>
+  </g>
+
+  <!-- WORDMARK -->
+  <text x="300" y="158" font-family="'Poppins','Trebuchet MS',sans-serif" font-size="92" font-weight="700" letter-spacing="-2" fill="#103D3A">Dose<tspan fill="#FF6B5E">ly</tspan></text>
+  <text x="304" y="200" font-family="'Poppins','Trebuchet MS',sans-serif" font-size="23" font-weight="500" letter-spacing="4" fill="#5B8C87">NEVER MISS A DOSE</text>
+</svg>

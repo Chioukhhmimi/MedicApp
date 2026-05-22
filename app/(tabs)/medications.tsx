@@ -92,13 +92,14 @@ export default function Medications(): React.JSX.Element {
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.background },
-  list: { padding: spacing.md, gap: spacing.sm, flexGrow: 1 },
+  list: { padding: spacing.lg, gap: spacing.md, flexGrow: 1 },
   section: {
     fontSize: fontSize.sm,
     fontWeight: '800',
     color: colors.textMuted,
     textTransform: 'uppercase',
-    marginTop: spacing.sm,
+    letterSpacing: 1,
+    marginTop: spacing.md,
     marginBottom: spacing.xs,
   },
   addBtn: { marginTop: spacing.lg },

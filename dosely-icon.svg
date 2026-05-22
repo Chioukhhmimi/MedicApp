@@ -1,0 +1,48 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Dosely app icon">
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1FB8A6"/>
+      <stop offset="1" stop-color="#0E8C82"/>
+    </linearGradient>
+    <linearGradient id="capLower" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FF8A6B"/>
+      <stop offset="1" stop-color="#FF6B5E"/>
+    </linearGradient>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="10" stdDeviation="16" flood-color="#063B37" flood-opacity="0.28"/>
+    </filter>
+    <clipPath id="capClip">
+      <rect x="146" y="216" width="280" height="118" rx="59"/>
+    </clipPath>
+  </defs>
+
+  <!-- App tile -->
+  <rect width="512" height="512" rx="116" fill="url(#tile)"/>
+  <!-- subtle inner glow -->
+  <circle cx="150" cy="140" r="220" fill="#FFFFFF" opacity="0.06"/>
+
+  <!-- Capsule group, rotated -45deg around its center (286,275) -->
+  <g transform="translate(-14 -10) rotate(-45 286 275)" filter="url(#soft)">
+    <!-- white base -->
+    <rect x="146" y="216" width="280" height="118" rx="59" fill="#FFFFFF"/>
+    <!-- coral lower half -->
+    <g clip-path="url(#capClip)">
+      <rect x="286" y="216" width="140" height="118" fill="url(#capLower)"/>
+    </g>
+    <!-- seam -->
+    <rect x="282" y="216" width="8" height="118" fill="#0E8C82" opacity="0.16"/>
+    <!-- shine -->
+    <rect x="170" y="232" width="120" height="20" rx="10" fill="#FFFFFF" opacity="0.7"/>
+  </g>
+
+  <!-- Reminder clock badge (top-right of capsule) -->
+  <g transform="translate(334 140)">
+    <circle r="62" fill="#0B5A54"/>
+    <circle r="62" fill="none" stroke="#FFFFFF" stroke-opacity="0.18" stroke-width="3"/>
+    <circle r="50" fill="#FFFFFF"/>
+    <!-- clock hands pointing to ~9:00 reminder -->
+    <rect x="-4" y="-30" width="8" height="34" rx="4" fill="#0E8C82"/>
+    <rect x="-26" y="-4" width="30" height="8" rx="4" fill="#FF6B5E"/>
+    <circle r="6" fill="#0E8C82"/>
+  </g>
+</svg>

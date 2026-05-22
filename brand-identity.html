@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dosely — Brand Identity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --teal:#0E8C82; --teal-bright:#1FB8A6; --teal-deep:#0B5A54; --teal-ink:#103D3A;
+    --coral:#FF6B5E; --coral-soft:#FF8A6B;
+    --cream:#F4F8F6; --mist:#E3EFEC; --slate:#5B8C87;
+    --paper:#FBFDFC; --ink:#0F2E2B;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',sans-serif;color:var(--ink);background:var(--paper);line-height:1.6}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+  h1,h2,h3,.disp{font-family:'Poppins',sans-serif}
+
+  /* Hero */
+  .hero{background:linear-gradient(135deg,var(--teal-bright),var(--teal-deep));color:#fff;padding:90px 0 80px;position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;width:520px;height:520px;border-radius:50%;background:#fff;opacity:.06;top:-160px;right:-120px}
+  .hero .wrap{position:relative;z-index:1}
+  .eyebrow{letter-spacing:5px;text-transform:uppercase;font-size:13px;font-weight:600;opacity:.85}
+  .hero h1{font-size:74px;font-weight:800;letter-spacing:-2px;margin:14px 0 6px;line-height:1}
+  .hero h1 span{color:var(--coral)}
+  .hero p{font-size:20px;opacity:.92;max-width:520px}
+
+  section{padding:74px 0;border-bottom:1px solid var(--mist)}
+  .label{display:inline-block;font-family:'Poppins';font-size:13px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--coral);margin-bottom:10px}
+  .sec-title{font-size:34px;font-weight:700;letter-spacing:-1px;color:var(--teal-ink);margin-bottom:8px}
+  .sec-sub{color:var(--slate);max-width:640px;margin-bottom:38px;font-size:16px}
+
+  /* Logo showcase */
+  .logo-stage{background:var(--cream);border-radius:24px;padding:54px;display:flex;justify-content:center;align-items:center;margin-bottom:22px}
+  .logo-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  .logo-card{border-radius:20px;padding:40px;display:flex;align-items:center;justify-content:center;min-height:180px}
+  .on-light{background:var(--cream)}
+  .on-dark{background:var(--teal-ink)}
+  .on-color{background:linear-gradient(135deg,var(--teal-bright),var(--teal-deep))}
+  .cap{font-size:12.5px;letter-spacing:2px;text-transform:uppercase;color:var(--slate);text-align:center;margin-top:10px;font-weight:600}
+
+  /* Concept */
+  .concept{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+  .concept ul{list-style:none;margin-top:8px}
+  .concept li{padding:12px 0 12px 38px;position:relative;border-bottom:1px solid var(--mist)}
+  .concept li::before{content:"";position:absolute;left:0;top:16px;width:18px;height:18px;border-radius:6px;background:var(--coral)}
+  .concept li b{color:var(--teal-ink);font-family:'Poppins';font-weight:600}
+
+  /* Colors */
+  .swatches{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .sw{border-radius:18px;overflow:hidden;border:1px solid var(--mist)}
+  .sw .chip{height:120px}
+  .sw .meta{padding:14px 16px}
+  .sw .nm{font-family:'Poppins';font-weight:600;font-size:15px}
+  .sw .hex{font-size:13px;color:var(--slate);letter-spacing:1px}
+  @media(max-width:760px){.swatches{grid-template-columns:repeat(2,1fr)}.logo-grid,.concept{grid-template-columns:1fr}.hero h1{font-size:52px}}
+
+  /* Type */
+  .type-row{display:flex;align-items:baseline;gap:22px;padding:20px 0;border-bottom:1px solid var(--mist);flex-wrap:wrap}
+  .type-row .big{font-family:'Poppins';color:var(--teal-ink)}
+  .type-meta{color:var(--slate);font-size:14px}
+  .scale span{font-family:'Poppins';color:var(--teal-ink);margin-right:18px;line-height:1.1}
+
+  /* Voice + usage */
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  .box{background:var(--cream);border-radius:18px;padding:26px}
+  .box h3{font-size:18px;color:var(--teal-ink);margin-bottom:6px}
+  .do{border-left:5px solid var(--teal-bright)}
+  .dont{border-left:5px solid var(--coral)}
+  .box ul{margin:8px 0 0 18px;color:#365551}
+  .box li{margin:6px 0}
+  @media(max-width:760px){.cols{grid-template-columns:1fr}}
+
+  /* App preview */
+  .phone{width:230px;height:470px;border-radius:42px;background:var(--teal-ink);padding:12px;margin:0 auto;box-shadow:0 30px 60px rgba(11,90,84,.25)}
+  .screen{background:linear-gradient(180deg,#fff,var(--cream));border-radius:32px;height:100%;padding:22px 18px;display:flex;flex-direction:column;gap:14px}
+  .pill-card{background:#fff;border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;box-shadow:0 6px 18px rgba(14,140,130,.08)}
+  .dot{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px}
+  .pc-teal{background:var(--mist)} .pc-coral{background:#FFE7E1}
+  .pill-card .t{font-family:'Poppins';font-weight:600;font-size:14px;color:var(--teal-ink)}
+  .pill-card .s{font-size:12px;color:var(--slate)}
+  .btn{margin-top:auto;background:var(--coral);color:#fff;text-align:center;padding:13px;border-radius:14px;font-family:'Poppins';font-weight:600;font-size:14px}
+  .footer{padding:50px 0;text-align:center;color:var(--slate);font-size:14px}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Brand Identity</div>
+    <h1>Dose<span>ly</span></h1>
+    <p>A warm, trustworthy medicine &amp; pill reminder app that helps people stay on schedule — without the clinical coldness.</p>
+  </div>
+</div>
+
+<!-- LOGO -->
+<section><div class="wrap">
+  <span class="label">01 — Logo</span>
+  <h2 class="sec-title">The Mark</h2>
+  <p class="sec-sub">A tilted capsule fused with a reminder clock. The pill says <em>medicine</em>; the clock badge says <em>on time</em>. Together they tell the whole story at a glance — even at app-icon size.</p>
+
+  <div class="logo-stage">
+    <svg width="560" viewBox="0 0 900 280" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="t" x1="0" y1="0" x2="220" y2="220" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#1FB8A6"/><stop offset="1" stop-color="#0E8C82"/></linearGradient>
+        <linearGradient id="cl" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF8A6B"/><stop offset="1" stop-color="#FF6B5E"/></linearGradient>
+        <clipPath id="cc"><rect x="63" y="93" width="121" height="51" rx="25.5"/></clipPath>
+      </defs>
+      <g transform="translate(40 32)">
+        <rect width="220" height="220" rx="50" fill="url(#t)"/>
+        <circle cx="64" cy="60" r="95" fill="#fff" opacity="0.06"/>
+        <g transform="translate(-6 -4) rotate(-45 123 118)">
+          <rect x="63" y="93" width="121" height="51" rx="25.5" fill="#fff"/>
+          <g clip-path="url(#cc)"><rect x="123" y="93" width="61" height="51" fill="url(#cl)"/></g>
+          <rect x="121" y="93" width="4" height="51" fill="#0E8C82" opacity="0.16"/>
+          <rect x="73" y="100" width="52" height="9" rx="4.5" fill="#fff" opacity="0.7"/>
+        </g>
+        <g transform="translate(143 60)">
+          <circle r="27" fill="#0B5A54"/><circle r="22" fill="#fff"/>
+          <rect x="-1.8" y="-13" width="3.6" height="15" rx="1.8" fill="#0E8C82"/>
+          <rect x="-11" y="-1.8" width="13" height="3.6" rx="1.8" fill="#FF6B5E"/>
+          <circle r="2.6" fill="#0E8C82"/>
+        </g>
+      </g>
+      <text x="300" y="158" font-family="Poppins,sans-serif" font-size="92" font-weight="700" letter-spacing="-2" fill="#103D3A">Dose<tspan fill="#FF6B5E">ly</tspan></text>
+      <text x="304" y="200" font-family="Poppins,sans-serif" font-size="23" font-weight="500" letter-spacing="4" fill="#5B8C87">NEVER MISS A DOSE</text>
+    </svg>
+  </div>
+
+  <div class="logo-grid">
+    <div><div class="logo-card on-light"><svg width="64" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="t2" x1="0" y1="0" x2="220" y2="220" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#1FB8A6"/><stop offset="1" stop-color="#0E8C82"/></linearGradient><linearGradient id="cl2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF8A6B"/><stop offset="1" stop-color="#FF6B5E"/></linearGradient><clipPath id="cc2"><rect x="63" y="93" width="121" height="51" rx="25.5"/></clipPath></defs><rect width="220" height="220" rx="50" fill="url(#t2)"/><g transform="translate(-6 -4) rotate(-45 123 118)"><rect x="63" y="93" width="121" height="51" rx="25.5" fill="#fff"/><g clip-path="url(#cc2)"><rect x="123" y="93" width="61" height="51" fill="url(#cl2)"/></g></g><g transform="translate(143 60)"><circle r="27" fill="#0B5A54"/><circle r="22" fill="#fff"/><rect x="-1.8" y="-13" width="3.6" height="15" rx="1.8" fill="#0E8C82"/><rect x="-11" y="-1.8" width="13" height="3.6" rx="1.8" fill="#FF6B5E"/><circle r="2.6" fill="#0E8C82"/></g></svg></div><div class="cap">Logomark — app icon</div></div>
+    <div><div class="logo-card on-dark"><svg width="200" viewBox="0 0 600 130" xmlns="http://www.w3.org/2000/svg"><text x="0" y="95" font-family="Poppins,sans-serif" font-size="92" font-weight="700" letter-spacing="-2" fill="#FFFFFF">Dose<tspan fill="#FF8A6B">ly</tspan></text></svg></div><div class="cap">Wordmark — reversed</div></div>
+  </div>
+</div></section>
+
+<!-- CONCEPT / MEANING -->
+<section><div class="wrap">
+  <span class="label">02 — Meaning</span>
+  <h2 class="sec-title">Why it works</h2>
+  <div class="concept">
+    <div class="logo-card on-color" style="min-height:240px"><svg width="150" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="cl3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF8A6B"/><stop offset="1" stop-color="#FF6B5E"/></linearGradient><clipPath id="cc3"><rect x="63" y="93" width="121" height="51" rx="25.5"/></clipPath></defs><g transform="translate(-6 -4) rotate(-45 123 118)"><rect x="63" y="93" width="121" height="51" rx="25.5" fill="#fff"/><g clip-path="url(#cc3)"><rect x="123" y="93" width="61" height="51" fill="url(#cl3)"/></g></g><g transform="translate(143 60)"><circle r="27" fill="#0B5A54"/><circle r="22" fill="#fff"/><rect x="-1.8" y="-13" width="3.6" height="15" rx="1.8" fill="#0E8C82"/><rect x="-11" y="-1.8" width="13" height="3.6" rx="1.8" fill="#FF6B5E"/><circle r="2.6" fill="#0E8C82"/></g></svg></div>
+    <ul>
+      <li><b>Capsule</b> — the universal symbol for medication, instantly readable.</li>
+      <li><b>Clock badge</b> — the reminder layer; turns "pill" into "pill, on time."</li>
+      <li><b>Two-tone split</b> — the coral half adds warmth and a human touch to a health tool.</li>
+      <li><b>Rounded squircle</b> — friendly and modern; conforms perfectly to iOS &amp; Android icon masks.</li>
+    </ul>
+  </div>
+</div></section>
+
+<!-- COLOR -->
+<section><div class="wrap">
+  <span class="label">03 — Color</span>
+  <h2 class="sec-title">Palette</h2>
+  <p class="sec-sub">Calming teal builds trust and signals health; warm coral adds approachability and powers calls-to-action. Soft neutrals keep screens clean and legible.</p>
+  <div class="swatches">
+    <div class="sw"><div class="chip" style="background:#0E8C82"></div><div class="meta"><div class="nm">Teal</div><div class="hex">#0E8C82</div></div></div>
+    <div class="sw"><div class="chip" style="background:#1FB8A6"></div><div class="meta"><div class="nm">Teal Bright</div><div class="hex">#1FB8A6</div></div></div>
+    <div class="sw"><div class="chip" style="background:#FF6B5E"></div><div class="meta"><div class="nm">Coral</div><div class="hex">#FF6B5E</div></div></div>
+    <div class="sw"><div class="chip" style="background:#103D3A"></div><div class="meta"><div class="nm">Ink</div><div class="hex">#103D3A</div></div></div>
+    <div class="sw"><div class="chip" style="background:#0B5A54"></div><div class="meta"><div class="nm">Teal Deep</div><div class="hex">#0B5A54</div></div></div>
+    <div class="sw"><div class="chip" style="background:#FF8A6B"></div><div class="meta"><div class="nm">Coral Soft</div><div class="hex">#FF8A6B</div></div></div>
+    <div class="sw"><div class="chip" style="background:#E3EFEC"></div><div class="meta"><div class="nm">Mist</div><div class="hex">#E3EFEC</div></div></div>
+    <div class="sw"><div class="chip" style="background:#F4F8F6;border-bottom:1px solid #E3EFEC"></div><div class="meta"><div class="nm">Cream</div><div class="hex">#F4F8F6</div></div></div>
+  </div>
+</div></section>
+
+<!-- TYPE -->
+<section><div class="wrap">
+  <span class="label">04 — Typography</span>
+  <h2 class="sec-title">Type system</h2>
+  <p class="sec-sub">A two-font system: <b>Poppins</b> for headings and the wordmark (rounded, friendly, confident) and <b>Inter</b> for body and UI (neutral, highly legible at small sizes).</p>
+  <div class="type-row"><div class="big" style="font-size:60px;font-weight:700">Poppins</div><div class="type-meta">Display / Headings / Wordmark<br>Weights 600–800</div></div>
+  <div class="type-row"><div class="big" style="font-family:'Inter';font-size:46px;font-weight:600;color:#103D3A">Inter</div><div class="type-meta">Body / UI / Labels<br>Weights 400–600</div></div>
+  <div class="scale" style="margin-top:26px">
+    <span style="font-size:40px;font-weight:700">Aa</span>
+    <span style="font-size:30px;font-weight:600">Aa</span>
+    <span style="font-size:22px;font-weight:500">Aa</span>
+    <span style="font-size:16px;font-weight:400;font-family:'Inter'">Take 1 tablet after breakfast</span>
+  </div>
+</div></section>
+
+<!-- USAGE -->
+<section><div class="wrap">
+  <span class="label">05 — Usage</span>
+  <h2 class="sec-title">Do &amp; Don't</h2>
+  <div class="cols">
+    <div class="box do"><h3>Do</h3><ul>
+      <li>Keep clear space around the mark equal to the clock badge's diameter.</li>
+      <li>Use the gradient tile on light backgrounds; the reversed wordmark on dark/teal.</li>
+      <li>Reserve coral for primary actions and alerts only.</li>
+      <li>Maintain the capsule's −45° angle at all times.</li>
+    </ul></div>
+    <div class="box dont"><h3>Don't</h3><ul>
+      <li>Don't recolor the capsule or rotate it upright.</li>
+      <li>Don't add drop shadows or outlines to the wordmark.</li>
+      <li>Don't stretch, condense, or skew the logo.</li>
+      <li>Don't place the mark on busy photos without a solid tile.</li>
+    </ul></div>
+  </div>
+</div></section>
+
+<!-- APP PREVIEW -->
+<section><div class="wrap">
+  <span class="label">06 — In context</span>
+  <h2 class="sec-title">The brand, applied</h2>
+  <p class="sec-sub">How the system feels inside the product.</p>
+  <div class="phone"><div class="screen">
+    <div style="font-family:'Poppins';font-weight:700;font-size:20px;color:#103D3A">Today</div>
+    <div style="font-size:12px;color:#5B8C87;margin-top:-10px">3 doses remaining</div>
+    <div class="pill-card"><div class="dot pc-teal">💊</div><div><div class="t">Vitamin D</div><div class="s">8:00 AM · with food</div></div></div>
+    <div class="pill-card"><div class="dot pc-coral">⏰</div><div><div class="t">Amoxicillin</div><div class="s">1:00 PM · due soon</div></div></div>
+    <div class="pill-card"><div class="dot pc-teal">💊</div><div><div class="t">Metformin</div><div class="s">9:00 PM</div></div></div>
+    <div class="btn">Mark as taken</div>
+  </div></div>
+</div></section>
+
+<div class="footer">
+  <strong style="font-family:'Poppins';color:#103D3A">Dosely</strong> — Brand Identity v1.0 · Teal &amp; Coral · Poppins + Inter
+</div>
+
+</body>
+</html>

@@ -78,11 +78,22 @@ export default function ExportScreen(): React.JSX.Element {
 }
 
 const styles = StyleSheet.create({
-  content: { padding: spacing.md, gap: spacing.md },
-  label: { fontSize: fontSize.sm, fontWeight: '700', color: colors.text },
+  content: {
+    padding: spacing.lg,
+    gap: spacing.md,
+    backgroundColor: colors.background,
+    flexGrow: 1,
+  },
+  label: {
+    fontSize: fontSize.sm,
+    fontWeight: '700',
+    color: colors.textMuted,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
   note: {
     backgroundColor: colors.primaryTint,
-    borderRadius: radius.md,
+    borderRadius: radius.lg,
     padding: spacing.md,
   },
   noteText: {

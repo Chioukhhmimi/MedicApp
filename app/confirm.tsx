@@ -22,7 +22,7 @@ import { getMedication, getOccurrence } from '@/services/database';
 import { resolveOccurrence } from '@/services/scheduleService';
 import { dismiss } from '@/lib/navigation';
 import { formatTimestamp } from '@/lib/dates';
-import { colors, fontSize, radius, spacing } from '@/theme';
+import { colors, fontSize, radius, shadow, spacing } from '@/theme';
 import type { Medication, Occurrence, UserAction } from '@/lib/types';
 
 export default function Confirm(): React.JSX.Element {
@@ -109,7 +109,7 @@ export default function Confirm(): React.JSX.Element {
 
   return (
     <ScrollView contentContainerStyle={styles.content}>
-      <View style={styles.card}>
+      <View style={[styles.card, shadow]}>
         <Text style={styles.kicker}>Medication reminder</Text>
         <Text style={styles.medName} accessibilityRole="header">
           {med.name}
@@ -176,36 +176,44 @@ const styles = StyleSheet.create({
     gap: spacing.md,
   },
   card: {
-    backgroundColor: colors.primaryTint,
-    borderRadius: radius.lg,
+    backgroundColor: colors.surface,
+    borderRadius: radius.xl,
     padding: spacing.lg,
     gap: spacing.xs,
   },
   kicker: {
     fontSize: fontSize.sm,
     fontWeight: '800',
-    color: colors.primary,
+    color: colors.primaryDark,
     textTransform: 'uppercase',
+    letterSpacing: 1,
   },
-  medName: { fontSize: fontSize.xl, fontWeight: '900', color: colors.text },
+  medName: {
+    fontSize: fontSize.xl,
+    fontWeight: '900',
+    color: colors.text,
+    letterSpacing: -0.5,
+  },
   dose: { fontSize: fontSize.body, color: colors.text },
-  time: { fontSize: fontSize.body, color: colors.primaryDark },
+  time: { fontSize: fontSize.body, color: colors.textMuted },
   snoozeTag: {
     marginTop: spacing.xs,
     fontSize: fontSize.sm,
     color: colors.accent,
-    fontWeight: '700',
+    fontWeight: '800',
+    letterSpacing: 0.5,
   },
   label: { fontSize: fontSize.sm, fontWeight: '700', color: colors.text },
   input: {
     borderWidth: 1,
     borderColor: colors.border,
-    borderRadius: radius.sm,
+    borderRadius: radius.md,
     padding: spacing.md,
-    minHeight: 64,
+    minHeight: 72,
     textAlignVertical: 'top',
     fontSize: fontSize.body,
     color: colors.text,
+    backgroundColor: colors.surface,
   },
   actions: { gap: spacing.sm, marginTop: spacing.sm },
   title: { fontSize: fontSize.lg, fontWeight: '800', color: colors.text },
@@ -216,8 +224,8 @@ const styles = StyleSheet.create({
   },
   resultText: {
     fontSize: fontSize.lg,
-    fontWeight: '700',
-    color: colors.primary,
+    fontWeight: '800',
+    color: colors.primaryDark,
     textAlign: 'center',
   },
 });

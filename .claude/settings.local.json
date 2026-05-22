@@ -12,7 +12,8 @@
       "Bash(npm install *)",
       "Bash(node -e \"const fs=require\\('expo-file-system'\\); console.log\\('exports:', Object.keys\\(fs\\).join\\(', '\\)\\)\")",
       "Bash(npm ls *)",
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "PowerShell($ProgressPreference='SilentlyContinue'; Invoke-WebRequest -Uri 'https://cdn.dribbble.com/userupload/42145311/file/original-4cc04121fefba36c6cc1a4ae37d8d805.png?resize=1600x1200' -OutFile 'D:\\\\mobile app\\\\.cache-design-ref.png' -UseBasicParsing; \\(Get-Item 'D:\\\\mobile app\\\\.cache-design-ref.png'\\).Length)"
     ]
   }
 }

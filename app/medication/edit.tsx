@@ -300,20 +300,27 @@ function Field({
 
 const styles = StyleSheet.create({
   flex: { flex: 1, backgroundColor: colors.background },
-  content: { padding: spacing.md, gap: spacing.sm },
+  content: { padding: spacing.lg, gap: spacing.sm },
   field: { gap: spacing.xs },
   rowFields: { flexDirection: 'row', gap: spacing.md },
   half: { flex: 1 },
-  label: { fontSize: fontSize.sm, fontWeight: '700', color: colors.text },
+  label: {
+    fontSize: fontSize.sm,
+    fontWeight: '700',
+    color: colors.textMuted,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
   input: {
     borderWidth: 1,
     borderColor: colors.border,
-    borderRadius: radius.sm,
+    borderRadius: radius.md,
     padding: spacing.md,
     fontSize: fontSize.body,
     color: colors.text,
+    backgroundColor: colors.surface,
   },
-  multiline: { minHeight: 72, textAlignVertical: 'top' },
+  multiline: { minHeight: 80, textAlignVertical: 'top' },
   error: { color: colors.danger, fontSize: fontSize.sm },
   submit: { marginTop: spacing.lg, marginBottom: spacing.xl },
 });

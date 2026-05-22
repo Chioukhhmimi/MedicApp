@@ -21,7 +21,14 @@ import {
 } from '@/services/database';
 import { describeRule } from '@/lib/scheduler';
 import { formatTimestamp } from '@/lib/dates';
-import { actionColor, colors, fontSize, radius, spacing } from '@/theme';
+import {
+  actionColor,
+  colors,
+  fontSize,
+  radius,
+  shadow,
+  spacing,
+} from '@/theme';
 import type { LogEntry, Medication, Occurrence } from '@/lib/types';
 
 export default function MedicationDetail(): React.JSX.Element {
@@ -118,6 +125,7 @@ export default function MedicationDetail(): React.JSX.Element {
       <View
         style={[
           styles.hero,
+          shadow,
           { backgroundColor: med.pillColor ?? colors.primaryTint },
         ]}
       >
@@ -244,20 +252,34 @@ function Section({
 }
 
 const styles = StyleSheet.create({
-  content: { padding: spacing.md, gap: spacing.md },
+  content: {
+    padding: spacing.lg,
+    gap: spacing.md,
+    backgroundColor: colors.background,
+  },
   center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  hero: { borderRadius: radius.lg, padding: spacing.lg, gap: spacing.xs },
-  medName: { fontSize: fontSize.xl, fontWeight: '900', color: colors.text },
+  hero: {
+    borderRadius: radius.xl,
+    padding: spacing.lg,
+    gap: spacing.xs,
+  },
+  medName: {
+    fontSize: fontSize.xl,
+    fontWeight: '900',
+    color: colors.text,
+    letterSpacing: -0.5,
+  },
   dose: { fontSize: fontSize.body, color: colors.text },
   pausedTag: {
     fontSize: fontSize.sm,
     fontWeight: '800',
     color: colors.danger,
     marginTop: spacing.xs,
+    letterSpacing: 0.5,
   },
   section: {
     backgroundColor: colors.surface,
-    borderRadius: radius.md,
+    borderRadius: radius.lg,
     padding: spacing.md,
     gap: spacing.xs,
   },
@@ -266,6 +288,7 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     color: colors.textMuted,
     textTransform: 'uppercase',
+    letterSpacing: 1,
   },
   body: { fontSize: fontSize.body, color: colors.text },
   muted: { fontSize: fontSize.sm, color: colors.textMuted },

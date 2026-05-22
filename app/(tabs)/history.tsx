@@ -13,7 +13,14 @@ import { SegmentedControl } from '@/components/SegmentedControl';
 import { getLogs, getOccurrencesBetween } from '@/services/database';
 import { computeAdherence, type AdherenceSummary } from '@/lib/adherence';
 import { formatTimestamp } from '@/lib/dates';
-import { actionColor, colors, fontSize, radius, spacing } from '@/theme';
+import {
+  actionColor,
+  colors,
+  fontSize,
+  radius,
+  shadow,
+  spacing,
+} from '@/theme';
 import type { LogEntry } from '@/lib/types';
 
 type Range = '7' | '30' | '90';
@@ -61,13 +68,31 @@ export default function History(): React.JSX.Element {
               onChange={setRange}
             />
             {summary && (
-              <View style={styles.card}>
+              <View style={[styles.card, shadow]}>
+                <Text style={styles.cardKicker}>Your adherence</Text>
                 <Text style={styles.pct}>{summary.adherencePct}%</Text>
-                <Text style={styles.pctLabel}>adherence</Text>
-                <Text style={styles.breakdown}>
-                  {summary.taken} taken · {summary.skipped} skipped ·{' '}
-                  {summary.missed} missed
-                </Text>
+                <View style={styles.statsRow}>
+                  <View style={styles.statBlock}>
+                    <Text style={[styles.statValue, { color: colors.mint }]}>
+                      {summary.taken}
+                    </Text>
+                    <Text style={styles.statLabel}>Taken</Text>
+                  </View>
+                  <View style={styles.statDivider} />
+                  <View style={styles.statBlock}>
+                    <Text style={[styles.statValue, { color: colors.danger }]}>
+                      {summary.skipped}
+                    </Text>
+                    <Text style={styles.statLabel}>Skipped</Text>
+                  </View>
+                  <View style={styles.statDivider} />
+                  <View style={styles.statBlock}>
+                    <Text style={[styles.statValue, { color: colors.accent }]}>
+                      {summary.missed}
+                    </Text>
+                    <Text style={styles.statLabel}>Missed</Text>
+                  </View>
+                </View>
               </View>
             )}
             <Button
@@ -114,33 +139,62 @@ export default function History(): React.JSX.Element {
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.background },
-  list: { padding: spacing.md, gap: spacing.sm, flexGrow: 1 },
+  list: { padding: spacing.lg, gap: spacing.md, flexGrow: 1 },
   headerWrap: { gap: spacing.md, marginBottom: spacing.sm },
   card: {
-    backgroundColor: colors.primaryTint,
-    borderRadius: radius.md,
+    backgroundColor: colors.surface,
+    borderRadius: radius.lg,
     padding: spacing.lg,
     alignItems: 'center',
+    gap: spacing.xs,
   },
-  pct: { fontSize: 44, fontWeight: '900', color: colors.primary },
-  pctLabel: { fontSize: fontSize.sm, color: colors.primaryDark },
-  breakdown: {
+  cardKicker: {
     fontSize: fontSize.sm,
+    fontWeight: '700',
     color: colors.textMuted,
-    marginTop: spacing.sm,
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+  },
+  pct: {
+    fontSize: 52,
+    fontWeight: '900',
+    color: colors.primaryDark,
+    letterSpacing: -1,
+  },
+  statsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: spacing.md,
+    alignSelf: 'stretch',
+    justifyContent: 'space-around',
+  },
+  statBlock: { alignItems: 'center', flex: 1, gap: 2 },
+  statDivider: { width: 1, height: 28, backgroundColor: colors.border },
+  statValue: { fontSize: fontSize.lg, fontWeight: '900' },
+  statLabel: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: colors.textMuted,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
   },
   section: { fontSize: fontSize.lg, fontWeight: '800', color: colors.text },
   logRow: {
     flexDirection: 'row',
     gap: spacing.md,
     backgroundColor: colors.surface,
-    borderRadius: radius.md,
+    borderRadius: radius.lg,
     padding: spacing.md,
     alignItems: 'center',
   },
-  actionDot: { width: 12, height: 12, borderRadius: 6 },
+  actionDot: { width: 10, height: 10, borderRadius: 5 },
   logBody: { flex: 1, gap: 2 },
-  logAction: { fontSize: fontSize.sm, fontWeight: '800', color: colors.text },
+  logAction: {
+    fontSize: fontSize.sm,
+    fontWeight: '800',
+    color: colors.text,
+    letterSpacing: 0.5,
+  },
   logTime: { fontSize: fontSize.sm, color: colors.textMuted },
   logNote: { fontSize: fontSize.sm, color: colors.text, fontStyle: 'italic' },
 });

@@ -1,7 +1,7 @@
 /** SegmentedControl — accessible single-choice selector. */
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { colors, fontSize, radius, spacing } from '@/theme';
+import { colors, fontSize, radius } from '@/theme';
 
 interface Option<T extends string> {
   value: T;
@@ -46,18 +46,18 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     backgroundColor: colors.surface,
-    borderRadius: radius.md,
-    padding: spacing.xs,
-    gap: spacing.xs,
+    borderRadius: radius.pill,
+    padding: 4,
+    gap: 4,
   },
   seg: {
     flex: 1,
-    minHeight: 44,
+    minHeight: 40,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: radius.sm,
+    borderRadius: radius.pill,
   },
   segActive: { backgroundColor: colors.primary },
-  label: { fontSize: fontSize.sm, fontWeight: '600', color: colors.textMuted },
+  label: { fontSize: fontSize.sm, fontWeight: '700', color: colors.textMuted },
   labelActive: { color: colors.white },
 });

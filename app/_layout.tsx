@@ -88,12 +88,13 @@ export default function RootLayout(): React.JSX.Element | null {
 
   return (
     <SafeAreaProvider>
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
       <Stack
         screenOptions={{
-          headerStyle: { backgroundColor: colors.primary },
-          headerTintColor: colors.white,
-          headerTitleStyle: { fontWeight: '700' },
+          headerStyle: { backgroundColor: colors.background },
+          headerTintColor: colors.text,
+          headerTitleStyle: { fontWeight: '800' },
+          headerShadowVisible: false,
           contentStyle: { backgroundColor: colors.background },
         }}
       >

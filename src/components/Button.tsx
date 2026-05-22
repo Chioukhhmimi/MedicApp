@@ -1,7 +1,7 @@
 /**
  * Button — themed, accessible pressable.
  *
- * Accessibility: explicit `accessibilityRole`, a 44pt minimum hit target,
+ * Accessibility: explicit `accessibilityRole`, a 48pt minimum hit target,
  * and a disabled state exposed to screen readers (Feature 8).
  */
 import React from 'react';
@@ -14,7 +14,7 @@ import {
   type ViewStyle,
 } from 'react-native';
 import { Icon, type IconSvgElement } from '@/components/Icon';
-import { colors, fontSize, radius, spacing } from '@/theme';
+import { colors, fontSize, radius, shadow, spacing } from '@/theme';
 
 type Variant = 'primary' | 'secondary' | 'danger' | 'ghost';
 
@@ -39,7 +39,7 @@ const fg: Record<Variant, string> = {
   primary: colors.white,
   secondary: colors.text,
   danger: colors.white,
-  ghost: colors.primary,
+  ghost: colors.primaryDark,
 };
 
 export function Button({
@@ -63,11 +63,13 @@ export function Button({
       accessibilityState={{ disabled: isOff }}
       style={({ pressed }) => [
         styles.base,
+        variant !== 'ghost' && variant !== 'secondary' && shadow,
+        variant === 'secondary' && styles.secondary,
+        variant === 'ghost' && styles.ghost,
         {
           backgroundColor: bg[variant],
           opacity: isOff ? 0.5 : pressed ? 0.85 : 1,
         },
-        variant === 'ghost' && styles.ghost,
         style,
       ]}
     >
@@ -87,17 +89,18 @@ export function Button({
 
 const styles = StyleSheet.create({
   base: {
-    minHeight: 48,
-    borderRadius: radius.md,
+    minHeight: 52,
+    borderRadius: radius.pill,
     paddingHorizontal: spacing.lg,
     alignItems: 'center',
     justifyContent: 'center',
   },
+  secondary: { borderWidth: 1, borderColor: colors.border },
   ghost: { borderWidth: 1, borderColor: colors.primary },
   content: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.sm,
   },
-  label: { fontSize: fontSize.body, fontWeight: '600' },
+  label: { fontSize: fontSize.body, fontWeight: '700', letterSpacing: 0.2 },
 });
