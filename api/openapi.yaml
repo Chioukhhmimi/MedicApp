@@ -1,0 +1,146 @@
+openapi: 3.0.3
+info:
+  title: MediTrack Sync API (stub)
+  version: 0.1.0
+  description: >
+    Forward-looking backend contract for an OPTIONAL multi-device sync feature.
+    MediTrack v1 is fully offline-first and does NOT call this API — it exists
+    so a future backend (Supabase / Firebase / custom) can be added without
+    reshaping the local data model. Schemas mirror src/lib/types.ts.
+servers:
+  - url: https://api.meditrack.example.com/v1
+security:
+  - bearerAuth: []
+paths:
+  /medications:
+    get:
+      summary: List the authenticated user's medications
+      operationId: listMedications
+      responses:
+        '200':
+          description: Array of medications
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Medication' }
+    post:
+      summary: Create a medication
+      operationId: createMedication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/MedicationInput' }
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Medication' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+  /medications/{id}:
+    parameters:
+      - { name: id, in: path, required: true, schema: { type: string } }
+    put:
+      summary: Update a medication
+      operationId: updateMedication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/MedicationInput' }
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Medication' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    delete:
+      summary: Delete a medication
+      operationId: deleteMedication
+      responses:
+        '204': { description: Deleted }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /history:
+    get:
+      summary: Query immutable dose-history log entries
+      operationId: getHistory
+      parameters:
+        - { name: medId, in: query, schema: { type: string } }
+        - { name: from, in: query, schema: { type: string, format: date-time } }
+        - { name: to, in: query, schema: { type: string, format: date-time } }
+      responses:
+        '200':
+          description: Array of log entries
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/LogEntry' }
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  responses:
+    BadRequest:
+      description: Validation error
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+  schemas:
+    Error:
+      type: object
+      properties:
+        code: { type: string }
+        message: { type: string }
+      required: [code, message]
+    Medication:
+      type: object
+      required: [id, name, doseQuantity, unit, startDate, paused, createdAt, updatedAt]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        strength: { type: string }
+        doseQuantity: { type: number }
+        unit: { type: string }
+        notes: { type: string }
+        startDate: { type: string, format: date }
+        endDate: { type: string, format: date }
+        pillColor: { type: string }
+        icon: { type: string }
+        paused: { type: boolean }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+    MedicationInput:
+      type: object
+      required: [name, doseQuantity, unit, startDate]
+      properties:
+        name: { type: string }
+        strength: { type: string }
+        doseQuantity: { type: number }
+        unit: { type: string }
+        notes: { type: string }
+        startDate: { type: string, format: date }
+        endDate: { type: string, format: date }
+        pillColor: { type: string }
+    LogEntry:
+      type: object
+      required: [id, occurrenceId, medId, scheduledTime, userAction, actionTime, source]
+      properties:
+        id: { type: string }
+        occurrenceId: { type: string }
+        medId: { type: string }
+        scheduledTime: { type: string, format: date-time }
+        userAction: { type: string, enum: [taken, skipped, later] }
+        actionTime: { type: string, format: date-time }
+        source: { type: string, enum: [notification, manual, auto, snooze] }
+        note: { type: string }

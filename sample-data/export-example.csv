@@ -1,0 +1,9 @@
+Medication,Scheduled Time,Action,Action Time,Source,Note
+Metformin,2026-05-12T06:00:00.000Z,taken,2026-05-12T06:04:11.000Z,notification,
+Metformin,2026-05-12T18:00:00.000Z,taken,2026-05-12T18:22:40.000Z,notification,
+Vitamin D,2026-05-04T07:00:00.000Z,taken,2026-05-04T07:30:02.000Z,notification,
+Metformin,2026-05-13T06:00:00.000Z,later,2026-05-13T06:01:55.000Z,notification,Snoozed once
+Metformin,2026-05-13T06:00:00.000Z,taken,2026-05-13T06:35:09.000Z,snooze,Taken after 1 snooze
+Metformin,2026-05-13T18:00:00.000Z,skipped,2026-05-13T19:10:00.000Z,manual,"Out for dinner, skipped"
+B12 Injection,2026-05-02T08:00:00.000Z,taken,2026-05-02T08:15:00.000Z,notification,
+Prednisone taper,2026-05-05T06:00:00.000Z,taken,2026-05-05T06:02:30.000Z,notification,

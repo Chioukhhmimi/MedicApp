@@ -1,0 +1,79 @@
+{
+  "_comment": "Sample seed data illustrating each schedule type. Load it via the dev seed helper (see README) or use it as a fixture in tests.",
+  "medications": [
+    {
+      "id": "med_sample_metformin",
+      "name": "Metformin",
+      "strength": "500 mg",
+      "doseQuantity": 1,
+      "unit": "tablet",
+      "notes": "Take with breakfast and dinner.",
+      "startDate": "2026-05-01",
+      "pillColor": "#0E7C66",
+      "paused": false,
+      "createdAt": "2026-05-01T07:00:00.000Z",
+      "updatedAt": "2026-05-01T07:00:00.000Z",
+      "schedule": {
+        "type": "daily",
+        "timezone": "Europe/Paris",
+        "times": ["08:00", "20:00"]
+      }
+    },
+    {
+      "id": "med_sample_vitd",
+      "name": "Vitamin D",
+      "strength": "1000 IU",
+      "doseQuantity": 1,
+      "unit": "capsule",
+      "notes": "Weekly booster.",
+      "startDate": "2026-05-04",
+      "pillColor": "#9A6700",
+      "paused": false,
+      "createdAt": "2026-05-04T07:00:00.000Z",
+      "updatedAt": "2026-05-04T07:00:00.000Z",
+      "schedule": {
+        "type": "weekly",
+        "timezone": "Europe/Paris",
+        "weekdays": [1],
+        "times": ["09:00"]
+      }
+    },
+    {
+      "id": "med_sample_injection",
+      "name": "B12 Injection",
+      "doseQuantity": 1,
+      "unit": "injection",
+      "startDate": "2026-05-02",
+      "pillColor": "#B23A48",
+      "paused": false,
+      "createdAt": "2026-05-02T07:00:00.000Z",
+      "updatedAt": "2026-05-02T07:00:00.000Z",
+      "schedule": {
+        "type": "interval",
+        "timezone": "Europe/Paris",
+        "intervalDays": 14,
+        "times": ["10:00"]
+      }
+    },
+    {
+      "id": "med_sample_steroid",
+      "name": "Prednisone taper",
+      "strength": "5 mg",
+      "doseQuantity": 2,
+      "unit": "tablet",
+      "notes": "Alternating-day pattern during taper.",
+      "startDate": "2026-05-05",
+      "endDate": "2026-06-05",
+      "pillColor": "#0A5C4C",
+      "paused": false,
+      "createdAt": "2026-05-05T07:00:00.000Z",
+      "updatedAt": "2026-05-05T07:00:00.000Z",
+      "schedule": {
+        "type": "pattern",
+        "timezone": "Europe/Paris",
+        "pattern": [1, 0],
+        "times": ["08:00"]
+      }
+    }
+  ]
+}
