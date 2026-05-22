@@ -19,7 +19,7 @@ export function EmptyState({
   return (
     <View style={styles.wrap} accessibilityRole="summary">
       <View style={styles.iconBadge}>
-        <Icon icon={icon} size={48} color={colors.primary} strokeWidth={1.5} />
+        <Icon icon={icon} size={48} color={colors.brand} strokeWidth={1.5} />
       </View>
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.message}>{message}</Text>
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     width: 96,
     height: 96,
     borderRadius: radius.pill,
-    backgroundColor: colors.primaryTint,
+    backgroundColor: colors.mist,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: spacing.sm,

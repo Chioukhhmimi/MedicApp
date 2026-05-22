@@ -25,6 +25,7 @@ import {
 import { EmptyState } from '@/components/EmptyState';
 import { Button } from '@/components/Button';
 import { Icon } from '@/components/Icon';
+import { Logo } from '@/components/Logo';
 import { useUpcoming, type UpcomingItem } from '@/hooks/useUpcoming';
 import { formatTimestamp } from '@/lib/dates';
 import {
@@ -88,6 +89,7 @@ export default function Home(): React.JSX.Element {
         }
       >
         <View style={styles.header}>
+          <Logo size={36} />
           <Text style={styles.kicker}>{greeting}</Text>
           <Text style={styles.title}>
             Worry less.{'\n'}

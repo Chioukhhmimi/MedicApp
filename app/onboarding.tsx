@@ -17,6 +17,7 @@ import {
 } from '@hugeicons/core-free-icons';
 import { Button } from '@/components/Button';
 import { Icon, type IconSvgElement } from '@/components/Icon';
+import { Logo } from '@/components/Logo';
 import { requestPermissions } from '@/services/notifications';
 import { useSettingsStore } from '@/store/useSettingsStore';
 import { colors, fontSize, spacing } from '@/theme';
@@ -28,8 +29,8 @@ const STEPS: ReadonlyArray<{
 }> = [
   {
     icon: WavingHand01Icon,
-    title: 'Welcome to MediTrack',
-    body: 'Schedule your medications, get reminded on time, and keep an honest history of every dose — all stored privately on this device.',
+    title: 'Welcome to Dosely',
+    body: 'Never miss a dose. Schedule your medications, get reminded on time, and keep an honest history of every dose — all stored privately on this device.',
   },
   {
     icon: CheckmarkCircle02Icon,
@@ -75,14 +76,18 @@ export default function Onboarding(): React.JSX.Element {
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.content}>
-        <View style={styles.iconBadge}>
-          <Icon
-            icon={current.icon}
-            size={64}
-            color={colors.primary}
-            strokeWidth={1.5}
-          />
-        </View>
+        {step === 0 ? (
+          <Logo size={96} />
+        ) : (
+          <View style={styles.iconBadge}>
+            <Icon
+              icon={current.icon}
+              size={64}
+              color={colors.brand}
+              strokeWidth={1.5}
+            />
+          </View>
+        )}
         <Text style={styles.title} accessibilityRole="header">
           {current.title}
         </Text>

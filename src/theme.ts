@@ -1,40 +1,51 @@
 /**
- * Design tokens. Centralised so screens stay consistent and the palette can
- * be audited for contrast (Feature 8: accessibility — all text/background
- * pairs below meet WCAG AA 4.5:1 unless explicitly noted).
+ * Design tokens — Dosely brand identity (teal + coral).
  *
- * Visual language: soft-lavender canvas, white elevated cards, coral primary,
- * sky/mint/amber accents — inspired by the "Daily Dose" Dribbble reference.
+ * Brand language: calming teal builds trust and signals health; warm coral
+ * powers calls-to-action. Soft cream / mist neutrals keep screens clean.
+ * Token names are preserved so existing callers don't need renaming —
+ * only the underlying values move.
  */
 import { Platform, type ViewStyle } from 'react-native';
 
 export const colors = {
-  // Brand — coral
-  primary: '#FE7E6E', // coral; fill color (use dark variant for text on white)
-  primaryDark: '#C44530', // coral, AA on white
-  primaryTint: '#FFE7E1', // soft peach (card tint / chip bg)
+  // Brand — teal family. Used for the logo, headings, app icon tile,
+  // health-positive signals ("taken"), and quiet accent surfaces.
+  brand: '#0E8C82',
+  brandBright: '#1FB8A6',
+  brandDeep: '#0B5A54',
+  brandInk: '#103D3A',
 
-  // Accents
-  accent: '#E08A2B', // amber (text on white, AA) — used for "later"
+  // Action — coral. Reserved for primary CTAs and alerts per the brand guide.
+  primary: '#FF6B5E', // coral; fill color (use dark variant for text on white)
+  primaryDark: '#C8453A', // coral-ink, AA on white
+  primaryTint: '#FFE7E1', // soft tint card / chip background
+  coralSoft: '#FF8A6B',
+
+  // Neutrals & surfaces — paper canvas, cream cards, mist dividers.
+  background: '#FBFDFC', // paper
+  surface: '#FFFFFF',
+  surfaceMuted: '#F4F8F6', // cream
+  mist: '#E3EFEC', // soft teal-tint
+  text: '#103D3A', // ink
+  textMuted: '#5B8C87', // slate — AA on white & cream
+  border: '#E3EFEC',
+  white: '#FFFFFF',
+
+  // Time-of-day chip accents (kept under existing names so the Today screen
+  // doesn't need touching). Mint = brand teal for "taken"; sky/lavender map
+  // to deeper teal shades to keep variety while staying on-brand.
+  accent: '#B86A1F', // amber — for "later"
   accentTint: '#FFE9C7',
-  sky: '#5A93AE', // muted sky for evening chip text — AA on white
-  skyTint: '#DDEEF6', // chip background
-  mint: '#3E8E6D', // mint — AA on white
+  sky: '#0E8C82', // teal for evening chip
+  skyTint: '#E3EFEC',
+  mint: '#0E8C82', // brand teal — "taken" status
   mintTint: '#DCF1E8',
-  lavender: '#7B7FC1', // periwinkle accent text
+  lavender: '#0B5A54', // teal-deep — night chip
 
   // Status
   danger: '#B23A48', // red — AA on white
   dangerTint: '#FBE3E6',
-
-  // Surfaces & text
-  background: '#EEF0F8', // soft lavender canvas
-  surface: '#FFFFFF', // elevated card
-  surfaceMuted: '#F7F8FC', // inner pill / quiet section
-  text: '#1A1F2E', // near-black for headings
-  textMuted: '#6B7088', // slate-muted — AA on white & lavender
-  border: '#E3E5F0',
-  white: '#FFFFFF',
 } as const;
 
 export const spacing = {
@@ -71,9 +82,8 @@ export const actionColor: Record<string, string> = {
 };
 
 /**
- * Time-of-day chip palette. Used on the Today list to colour-code groups —
- * mirrors the "Morning, before breakfast" / "Morning, after breakfast" chips
- * from the reference design.
+ * Time-of-day chip palette. Used on the Today list to colour-code groups.
+ * Morning is warm coral; afternoon amber; evening cool teal; night deep teal.
  */
 export type TimeBucket = 'morning' | 'afternoon' | 'evening' | 'night';
 
@@ -83,8 +93,8 @@ export const bucketChip: Record<
 > = {
   morning: { bg: colors.primaryTint, fg: colors.primaryDark, label: 'Morning' },
   afternoon: { bg: colors.accentTint, fg: colors.accent, label: 'Afternoon' },
-  evening: { bg: colors.skyTint, fg: colors.sky, label: 'Evening' },
-  night: { bg: '#E5E2F5', fg: colors.lavender, label: 'Night' },
+  evening: { bg: colors.mist, fg: colors.brand, label: 'Evening' },
+  night: { bg: '#D8E5E2', fg: colors.brandDeep, label: 'Night' },
 };
 
 /** Returns the time-of-day bucket for an "HH:mm" or full ISO timestamp. */
@@ -98,9 +108,9 @@ export function bucketForHour(hour: number): TimeBucket {
 /** Soft elevated-card shadow. iOS uses native shadow props, Android falls back to elevation. */
 export const shadow: ViewStyle = Platform.select<ViewStyle>({
   ios: {
-    shadowColor: '#1A1F2E',
+    shadowColor: '#063B37',
     shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.06,
+    shadowOpacity: 0.08,
     shadowRadius: 16,
   },
   android: { elevation: 2 },

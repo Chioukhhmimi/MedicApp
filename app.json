@@ -1,22 +1,24 @@
 {
   "expo": {
-    "name": "MediTrack",
-    "slug": "meditrack",
+    "name": "Dosely",
+    "slug": "dosely",
     "version": "1.0.0",
     "orientation": "portrait",
-    "scheme": "meditrack",
+    "scheme": "dosely",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "icon": "./assets/icon.png",
     "splash": {
+      "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#0E7C66"
+      "backgroundColor": "#0E8C82"
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.meditrack.app",
+      "bundleIdentifier": "com.dosely.app",
       "infoPlist": {
         "UIBackgroundModes": [
           "remote-notification"
@@ -24,9 +26,10 @@
       }
     },
     "android": {
-      "package": "com.meditrack.app",
+      "package": "com.dosely.app",
       "adaptiveIcon": {
-        "backgroundColor": "#0E7C66"
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0E8C82"
       },
       "permissions": [
         "NOTIFICATIONS",
@@ -35,6 +38,9 @@
         "VIBRATE"
       ]
     },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
     "plugins": [
       "expo-router",
       "expo-secure-store",
@@ -42,7 +48,7 @@
       [
         "expo-notifications",
         {
-          "color": "#0E7C66"
+          "color": "#0E8C82"
         }
       ],
       "expo-asset"
