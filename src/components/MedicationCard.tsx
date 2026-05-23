@@ -1,6 +1,7 @@
 /** MedicationCard — list row showing a medication and its schedule summary. */
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { PillIcon } from '@hugeicons/core-free-icons';
 import { Icon } from '@/components/Icon';
 import { colors, fontSize, radius, shadow, spacing } from '@/theme';
@@ -17,6 +18,7 @@ export function MedicationCard({
   scheduleSummary,
   onPress,
 }: Props): React.JSX.Element {
+  const { t } = useTranslation();
   const accent = medication.pillColor ?? colors.primary;
   const dose = `${medication.doseQuantity} ${medication.unit}`;
   return (
@@ -42,7 +44,7 @@ export function MedicationCard({
       </View>
       {medication.paused ? (
         <View style={styles.badge}>
-          <Text style={styles.badgeText}>Paused</Text>
+          <Text style={styles.badgeText}>{t('medications.paused_badge')}</Text>
         </View>
       ) : null}
     </Pressable>

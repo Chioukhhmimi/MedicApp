@@ -17,6 +17,7 @@ import {
 import { useFocusEffect, useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { DateTime } from 'luxon';
+import { useTranslation } from 'react-i18next';
 import {
   PillIcon,
   PlusSignIcon,
@@ -27,7 +28,8 @@ import { Button } from '@/components/Button';
 import { Icon } from '@/components/Icon';
 import { Logo } from '@/components/Logo';
 import { useUpcoming, type UpcomingItem } from '@/hooks/useUpcoming';
-import { formatTimestamp } from '@/lib/dates';
+import { useLocale } from '@/hooks/useLocale';
+import { formatTimeOfDay, formatTimestamp } from '@/lib/dates';
 import {
   bucketChip,
   bucketForHour,
@@ -48,6 +50,8 @@ interface BucketGroup {
 
 export default function Home(): React.JSX.Element {
   const router = useRouter();
+  const { t } = useTranslation();
+  const locale = useLocale();
   const { items, loading, reload } = useUpcoming(2);
 
   // Refresh whenever the tab regains focus (e.g. after confirming a dose).
@@ -74,11 +78,11 @@ export default function Home(): React.JSX.Element {
 
   const greeting = useMemo(() => {
     const h = DateTime.local().hour;
-    if (h < 12) return 'Good morning';
-    if (h < 17) return 'Good afternoon';
-    if (h < 21) return 'Good evening';
-    return 'Good night';
-  }, []);
+    if (h < 12) return t('today.greeting_morning');
+    if (h < 17) return t('today.greeting_afternoon');
+    if (h < 21) return t('today.greeting_evening');
+    return t('today.greeting_night');
+  }, [t]);
 
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
@@ -92,23 +96,22 @@ export default function Home(): React.JSX.Element {
           <Logo size={36} />
           <Text style={styles.kicker}>{greeting}</Text>
           <Text style={styles.title}>
-            Worry less.{'\n'}
-            <Text style={styles.titleAccent}>Live healthier.</Text>
+            {t('today.title_line1')}
+            {'\n'}
+            <Text style={styles.titleAccent}>{t('today.title_line2')}</Text>
           </Text>
-          <Text style={styles.subtitle}>
-            Here are today&apos;s reminders, all in one place.
-          </Text>
+          <Text style={styles.subtitle}>{t('today.subtitle')}</Text>
         </View>
 
         {groups.length === 0 && !loading ? (
           <View style={styles.empty}>
             <EmptyState
-              title="Nothing due"
-              message="No reminders in the next two days. Add a medication to get started."
+              title={t('today.empty_title')}
+              message={t('today.empty_message')}
               icon={SparklesIcon}
             />
             <Button
-              label="Add medication"
+              label={t('today.add_medication')}
               icon={PlusSignIcon}
               onPress={() => router.push('/medication/edit')}
             />
@@ -118,6 +121,7 @@ export default function Home(): React.JSX.Element {
             <BucketSection
               key={group.bucket}
               group={group}
+              locale={locale}
               onConfirm={(occurrenceId) =>
                 router.push({
                   pathname: '/confirm',
@@ -134,22 +138,28 @@ export default function Home(): React.JSX.Element {
 
 function BucketSection({
   group,
+  locale,
   onConfirm,
 }: {
   group: BucketGroup;
+  locale: string;
   onConfirm: (occurrenceId: string) => void;
 }): React.JSX.Element {
+  const { t } = useTranslation();
   const chip = bucketChip[group.bucket];
   return (
     <View style={styles.section}>
       <View style={[styles.chip, { backgroundColor: chip.bg }]}>
-        <Text style={[styles.chipText, { color: chip.fg }]}>{chip.label}</Text>
+        <Text style={[styles.chipText, { color: chip.fg }]}>
+          {t(`buckets.${group.bucket}`)}
+        </Text>
       </View>
       <View style={[styles.sectionCard, shadow]}>
         {group.items.map((item, idx) => (
           <ReminderRow
             key={item.occurrence.id}
             item={item}
+            locale={locale}
             isLast={idx === group.items.length - 1}
             onConfirm={() => onConfirm(item.occurrence.id)}
           />
@@ -161,13 +171,16 @@ function BucketSection({
 
 function ReminderRow({
   item,
+  locale,
   isLast,
   onConfirm,
 }: {
   item: UpcomingItem;
+  locale: string;
   isLast: boolean;
   onConfirm: () => void;
 }): React.JSX.Element {
+  const { t } = useTranslation();
   const { occurrence, medication } = item;
   const due = DateTime.fromISO(occurrence.scheduledTime);
   const isOverdue = due < DateTime.now();
@@ -176,9 +189,10 @@ function ReminderRow({
     <Pressable
       onPress={onConfirm}
       accessibilityRole="button"
-      accessibilityLabel={`${medication.name} due ${formatTimestamp(
-        occurrence.scheduledTime,
-      )}`}
+      accessibilityLabel={t('today.row_a11y', {
+        name: medication.name,
+        time: formatTimestamp(occurrence.scheduledTime, undefined, locale),
+      })}
       style={({ pressed }) => [
         styles.row,
         !isLast && styles.rowDivider,
@@ -196,9 +210,11 @@ function ReminderRow({
       </View>
       <View style={styles.timeWrap}>
         <Text style={[styles.time, isOverdue && styles.overdueText]}>
-          {due.toFormat('h:mm a')}
+          {formatTimeOfDay(occurrence.scheduledTime, locale)}
         </Text>
-        {isOverdue ? <Text style={styles.overdueTag}>Overdue</Text> : null}
+        {isOverdue ? (
+          <Text style={styles.overdueTag}>{t('today.overdue')}</Text>
+        ) : null}
       </View>
     </Pressable>
   );

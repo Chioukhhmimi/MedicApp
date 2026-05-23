@@ -4,6 +4,7 @@
  */
 import React from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { colors, fontSize, radius, spacing } from '@/theme';
 import { SegmentedControl } from './SegmentedControl';
 import { TimePickerList } from './TimePickerList';
@@ -17,21 +18,14 @@ interface Props {
   errors?: Partial<Record<keyof ScheduleDraft, string>>;
 }
 
-const WEEKDAYS = [
-  { value: 1, label: 'Mon' },
-  { value: 2, label: 'Tue' },
-  { value: 3, label: 'Wed' },
-  { value: 4, label: 'Thu' },
-  { value: 5, label: 'Fri' },
-  { value: 6, label: 'Sat' },
-  { value: 7, label: 'Sun' },
-];
+const WEEKDAYS = [1, 2, 3, 4, 5, 6, 7];
 
 export function ScheduleEditor({
   value,
   onChange,
   errors,
 }: Props): React.JSX.Element {
+  const { t } = useTranslation();
   const set = (patch: Partial<ScheduleDraft>): void =>
     onChange({ ...value, ...patch });
 
@@ -46,13 +40,13 @@ export function ScheduleEditor({
 
   return (
     <View style={styles.wrap}>
-      <Text style={styles.label}>Schedule type</Text>
+      <Text style={styles.label}>{t('schedule.type_label')}</Text>
       <SegmentedControl<ScheduleType>
         options={[
-          { value: 'daily', label: 'Daily' },
-          { value: 'weekly', label: 'Weekly' },
-          { value: 'interval', label: 'Interval' },
-          { value: 'pattern', label: 'Pattern' },
+          { value: 'daily', label: t('schedule.type_daily') },
+          { value: 'weekly', label: t('schedule.type_weekly') },
+          { value: 'interval', label: t('schedule.type_interval') },
+          { value: 'pattern', label: t('schedule.type_pattern') },
         ]}
         value={value.type}
         onChange={(type) => set({ type })}
@@ -60,23 +54,24 @@ export function ScheduleEditor({
 
       {value.type === 'weekly' && (
         <View>
-          <Text style={styles.label}>Days of week</Text>
+          <Text style={styles.label}>{t('schedule.weekdays')}</Text>
           <View style={styles.weekRow}>
             {WEEKDAYS.map((d) => {
-              const active = (value.weekdays ?? []).includes(d.value);
+              const active = (value.weekdays ?? []).includes(d);
+              const label = t(`schedule.weekday_short.${d}`);
               return (
                 <Pressable
-                  key={d.value}
-                  onPress={() => toggleWeekday(d.value)}
+                  key={d}
+                  onPress={() => toggleWeekday(d)}
                   accessibilityRole="checkbox"
                   accessibilityState={{ checked: active }}
-                  accessibilityLabel={d.label}
+                  accessibilityLabel={label}
                   style={[styles.day, active && styles.dayActive]}
                 >
                   <Text
                     style={[styles.dayText, active && styles.dayTextActive]}
                   >
-                    {d.label}
+                    {label}
                   </Text>
                 </Pressable>
               );
@@ -90,16 +85,16 @@ export function ScheduleEditor({
 
       {value.type === 'interval' && (
         <View>
-          <Text style={styles.label}>Repeat every (days)</Text>
+          <Text style={styles.label}>{t('schedule.interval_label')}</Text>
           <TextInput
             style={styles.input}
             keyboardType="number-pad"
             value={String(value.intervalDays ?? '')}
-            onChangeText={(t) =>
-              set({ intervalDays: t ? Math.max(1, Number(t)) : undefined })
+            onChangeText={(text) =>
+              set({ intervalDays: text ? Math.max(1, Number(text)) : undefined })
             }
-            accessibilityLabel="Interval in days"
-            placeholder="e.g. 3"
+            accessibilityLabel={t('schedule.interval_label')}
+            placeholder={t('schedule.interval_placeholder')}
           />
           {errors?.intervalDays ? (
             <Text style={styles.error}>{errors.intervalDays}</Text>
@@ -109,20 +104,20 @@ export function ScheduleEditor({
 
       {value.type === 'pattern' && (
         <View>
-          <Text style={styles.label}>Take / skip pattern</Text>
-          <Text style={styles.hint}>
-            Pick a preset, or tap days to toggle take (●) / skip (○).
-          </Text>
+          <Text style={styles.label}>{t('schedule.pattern_label')}</Text>
+          <Text style={styles.hint}>{t('schedule.pattern_hint')}</Text>
           <View style={styles.presetRow}>
             {PATTERN_PRESETS.map((p) => (
               <Pressable
-                key={p.label}
+                key={p.key}
                 onPress={() => set({ pattern: p.pattern })}
                 accessibilityRole="button"
-                accessibilityLabel={p.label}
+                accessibilityLabel={t(`schedule.pattern_presets.${p.key}`)}
                 style={styles.preset}
               >
-                <Text style={styles.presetText}>{p.label}</Text>
+                <Text style={styles.presetText}>
+                  {t(`schedule.pattern_presets.${p.key}`)}
+                </Text>
               </Pressable>
             ))}
           </View>
@@ -136,9 +131,6 @@ export function ScheduleEditor({
                   set({ pattern: next });
                 }}
                 accessibilityRole="button"
-                accessibilityLabel={`Day ${idx + 1} ${
-                  bit === 1 ? 'take' : 'skip'
-                }`}
                 style={[styles.day, bit === 1 && styles.dayActive]}
               >
                 <Text
@@ -155,7 +147,7 @@ export function ScheduleEditor({
         </View>
       )}
 
-      <Text style={styles.label}>Reminder times</Text>
+      <Text style={styles.label}>{t('schedule.times')}</Text>
       <TimePickerList
         times={value.times}
         onChange={(times) => set({ times })}

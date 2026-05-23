@@ -2,6 +2,7 @@
 import React from 'react';
 import { Platform } from 'react-native';
 import { Tabs } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import {
   ChartBarLineIcon,
   Home01Icon,
@@ -31,6 +32,7 @@ function TabIcon({
 }
 
 export default function TabsLayout(): React.JSX.Element {
+  const { t } = useTranslation();
   return (
     <Tabs
       screenOptions={{
@@ -55,7 +57,7 @@ export default function TabsLayout(): React.JSX.Element {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Today',
+          title: t('tabs.today'),
           headerShown: false,
           tabBarIcon: ({ color, focused }) => (
             <TabIcon icon={Home01Icon} color={color} focused={focused} />
@@ -65,7 +67,7 @@ export default function TabsLayout(): React.JSX.Element {
       <Tabs.Screen
         name="medications"
         options={{
-          title: 'Medications',
+          title: t('tabs.medications'),
           tabBarIcon: ({ color, focused }) => (
             <TabIcon icon={Medicine02Icon} color={color} focused={focused} />
           ),
@@ -74,7 +76,7 @@ export default function TabsLayout(): React.JSX.Element {
       <Tabs.Screen
         name="history"
         options={{
-          title: 'History',
+          title: t('tabs.history'),
           tabBarIcon: ({ color, focused }) => (
             <TabIcon icon={ChartBarLineIcon} color={color} focused={focused} />
           ),
@@ -83,7 +85,7 @@ export default function TabsLayout(): React.JSX.Element {
       <Tabs.Screen
         name="settings"
         options={{
-          title: 'Settings',
+          title: t('tabs.settings'),
           tabBarIcon: ({ color, focused }) => (
             <TabIcon icon={Settings02Icon} color={color} focused={focused} />
           ),

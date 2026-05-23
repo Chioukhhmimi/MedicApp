@@ -87,14 +87,11 @@ export const actionColor: Record<string, string> = {
  */
 export type TimeBucket = 'morning' | 'afternoon' | 'evening' | 'night';
 
-export const bucketChip: Record<
-  TimeBucket,
-  { bg: string; fg: string; label: string }
-> = {
-  morning: { bg: colors.primaryTint, fg: colors.primaryDark, label: 'Morning' },
-  afternoon: { bg: colors.accentTint, fg: colors.accent, label: 'Afternoon' },
-  evening: { bg: colors.mist, fg: colors.brand, label: 'Evening' },
-  night: { bg: '#D8E5E2', fg: colors.brandDeep, label: 'Night' },
+export const bucketChip: Record<TimeBucket, { bg: string; fg: string }> = {
+  morning: { bg: colors.primaryTint, fg: colors.primaryDark },
+  afternoon: { bg: colors.accentTint, fg: colors.accent },
+  evening: { bg: colors.mist, fg: colors.brand },
+  night: { bg: '#D8E5E2', fg: colors.brandDeep },
 };
 
 /** Returns the time-of-day bucket for an "HH:mm" or full ISO timestamp. */

@@ -99,6 +99,9 @@ export interface LogEntry {
   note?: string;
 }
 
+/** Supported UI languages — French (default), English, Arabic (RTL). */
+export type AppLanguage = 'fr' | 'en' | 'ar';
+
 /** App-wide settings, persisted in SQLite (a single row). */
 export interface Settings {
   defaultSnoozeIntervalMin: number; // minutes between snooze reminders
@@ -109,6 +112,7 @@ export interface Settings {
   notificationSound: string; // "default" or a bundled sound key
   biometricLock: boolean;
   onboardingComplete: boolean;
+  language: AppLanguage; // chosen UI language; defaults to French
 }
 
 /** Per-medication overrides for snooze behaviour (null = use global). */
@@ -127,4 +131,5 @@ export const DEFAULT_SETTINGS: Settings = {
   notificationSound: 'default',
   biometricLock: false,
   onboardingComplete: false,
+  language: 'fr',
 };

@@ -5,6 +5,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { SectionList, StyleSheet, Text } from 'react-native';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 import { PlusSignIcon } from '@hugeicons/core-free-icons';
 import { MedicationCard } from '@/components/MedicationCard';
 import { EmptyState } from '@/components/EmptyState';
@@ -16,6 +17,7 @@ import type { Medication } from '@/lib/types';
 
 export default function Medications(): React.JSX.Element {
   const router = useRouter();
+  const { t } = useTranslation();
   const medications = useMedStore((s) => s.medications);
   const refresh = useMedStore((s) => s.refresh);
   const getRules = useMedStore((s) => s.getRules);
@@ -34,20 +36,22 @@ export default function Medications(): React.JSX.Element {
       const entries: Record<string, string> = {};
       for (const med of medications) {
         const rules = await getRules(med.id);
-        entries[med.id] = rules[0] ? describeRule(rules[0]) : 'No schedule set';
+        entries[med.id] = rules[0]
+          ? describeRule(rules[0], t)
+          : t('medications.no_schedule');
       }
       if (active) setSummaries(entries);
     })();
     return () => {
       active = false;
     };
-  }, [medications, getRules]);
+  }, [medications, getRules, t]);
 
   const active = medications.filter((m) => !m.paused);
   const paused = medications.filter((m) => m.paused);
   const sections = [
-    { title: 'Active', data: active },
-    { title: 'Paused', data: paused },
+    { title: t('medications.section_active'), data: active },
+    { title: t('medications.section_paused'), data: paused },
   ].filter((s) => s.data.length > 0);
 
   return (
@@ -73,13 +77,13 @@ export default function Medications(): React.JSX.Element {
         )}
         ListEmptyComponent={
           <EmptyState
-            title="No medications yet"
-            message="Tap the button below to add your first medication and reminder."
+            title={t('medications.empty_title')}
+            message={t('medications.empty_message')}
           />
         }
         ListFooterComponent={
           <Button
-            label="Add medication"
+            label={t('medications.add')}
             icon={PlusSignIcon}
             onPress={() => router.push('/medication/edit')}
             style={styles.addBtn}

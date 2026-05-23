@@ -182,34 +182,72 @@ export function generateUpcoming(
   return occurrencesBetween(rule, from, to);
 }
 
-/** Human-readable summary of a rule, used on cards and detail screens. */
-export function describeRule(rule: ScheduleRule): string {
+/** Minimal translator shape — matches `react-i18next`'s `t` so callers can
+ *  pass theirs in without importing it here. Keeps this module pure. */
+export type RuleTranslate = (
+  key: string,
+  params?: Record<string, unknown>,
+) => string;
+
+/**
+ * Human-readable summary of a rule, used on cards and detail screens.
+ * Pass a translator from react-i18next to get localised output; without one,
+ * the function returns its original English phrasing (kept for unit tests).
+ */
+export function describeRule(rule: ScheduleRule, t?: RuleTranslate): string {
   const timeList = rule.times.join(', ');
+  if (!t) {
+    switch (rule.type) {
+      case 'daily':
+        return `Every day at ${timeList}`;
+      case 'weekly': {
+        const names = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        const picked = (rule.weekdays ?? [])
+          .slice()
+          .sort((a, b) => a - b)
+          .map((w) => names[w - 1])
+          .join(', ');
+        return `${picked || 'No days'} at ${timeList}`;
+      }
+      case 'interval':
+        return `Every ${rule.intervalDays ?? 1} day(s) at ${timeList}`;
+      case 'pattern':
+        return `Pattern [${(rule.pattern ?? []).join(',')}] at ${timeList}`;
+      default:
+        return timeList;
+    }
+  }
   switch (rule.type) {
     case 'daily':
-      return `Every day at ${timeList}`;
+      return t('schedule.describe.daily', { times: timeList });
     case 'weekly': {
-      const names = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
       const picked = (rule.weekdays ?? [])
         .slice()
         .sort((a, b) => a - b)
-        .map((w) => names[w - 1])
+        .map((w) => t(`schedule.weekday_short.${w}`))
         .join(', ');
-      return `${picked || 'No days'} at ${timeList}`;
+      return t('schedule.describe.weekly', { days: picked, times: timeList });
     }
     case 'interval':
-      return `Every ${rule.intervalDays ?? 1} day(s) at ${timeList}`;
+      return t('schedule.describe.interval', {
+        n: rule.intervalDays ?? 1,
+        times: timeList,
+      });
     case 'pattern':
-      return `Pattern [${(rule.pattern ?? []).join(',')}] at ${timeList}`;
+      return t('schedule.describe.pattern', {
+        pattern: (rule.pattern ?? []).join(','),
+        times: timeList,
+      });
     default:
       return timeList;
   }
 }
 
-/** Common pattern presets surfaced in the schedule editor. */
-export const PATTERN_PRESETS: { label: string; pattern: number[] }[] = [
-  { label: 'Every other day', pattern: [1, 0] },
-  { label: 'Two on, one off', pattern: [1, 1, 0] },
-  { label: 'One on, two off', pattern: [1, 0, 0] },
-  { label: 'Weekdays-ish (5 on, 2 off)', pattern: [1, 1, 1, 1, 1, 0, 0] },
+/** Common pattern presets surfaced in the schedule editor. The `key` resolves
+ *  via i18n at the call-site (`schedule.pattern_presets.<key>`). */
+export const PATTERN_PRESETS: { key: string; pattern: number[] }[] = [
+  { key: 'every_other_day', pattern: [1, 0] },
+  { key: 'two_on_one_off', pattern: [1, 1, 0] },
+  { key: 'one_on_two_off', pattern: [1, 0, 0] },
+  { key: 'weekdays_ish', pattern: [1, 1, 1, 1, 1, 0, 0] },
 ];

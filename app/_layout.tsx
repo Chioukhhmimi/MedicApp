@@ -12,8 +12,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Stack, useRouter } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Notifications from 'expo-notifications';
+import * as Updates from 'expo-updates';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 import { initMonitoring, reportError } from '@/services/monitoring';
 import {
   configureNotifications,
@@ -23,6 +25,7 @@ import {
 import { getDb } from '@/services/database';
 import { useMedStore } from '@/store/useMedStore';
 import { useSettingsStore } from '@/store/useSettingsStore';
+import { ensureRtl, initI18n } from '@/i18n';
 import { colors } from '@/theme';
 
 void SplashScreen.preventAutoHideAsync();
@@ -31,6 +34,7 @@ export default function RootLayout(): React.JSX.Element | null {
   const router = useRouter();
   const [ready, setReady] = useState(false);
   const coldStartHandled = useRef(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     let mounted = true;
@@ -41,6 +45,22 @@ export default function RootLayout(): React.JSX.Element | null {
         await configureNotifications();
         await getDb(); // open + migrate
         await useSettingsStore.getState().load();
+
+        // i18n: align native RTL flag with the saved language, then init.
+        // If the flag flipped (rare — only on first launch in Arabic, or after
+        // a manual data reset), reload once so the new direction applies.
+        const language = useSettingsStore.getState().settings.language;
+        const rtlChanged = ensureRtl(language);
+        await initI18n(language);
+        if (rtlChanged) {
+          try {
+            await Updates.reloadAsync();
+            return;
+          } catch {
+            /* expo-updates not available (e.g. Expo Go) — continue */
+          }
+        }
+
         await useMedStore.getState().bootstrap();
 
         // Cold start: app was launched by tapping a reminder.
@@ -103,14 +123,20 @@ export default function RootLayout(): React.JSX.Element | null {
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen
           name="medication/edit"
-          options={{ presentation: 'modal', title: 'Medication' }}
+          options={{
+            presentation: 'modal',
+            title: t('edit.title_edit'),
+          }}
         />
-        <Stack.Screen name="medication/[id]" options={{ title: 'Details' }} />
+        <Stack.Screen
+          name="medication/[id]"
+          options={{ title: t('medication_detail.schedule') }}
+        />
         <Stack.Screen
           name="confirm"
-          options={{ presentation: 'modal', title: 'Confirm dose' }}
+          options={{ presentation: 'modal', title: t('confirm.title') }}
         />
-        <Stack.Screen name="export" options={{ title: 'Export history' }} />
+        <Stack.Screen name="export" options={{ title: t('history.export') }} />
       </Stack>
     </SafeAreaProvider>
   );

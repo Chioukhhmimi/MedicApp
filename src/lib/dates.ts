@@ -37,12 +37,23 @@ export function calendarDaysBetween(from: DateTime, to: DateTime): number {
   return Math.round(to.diff(from, 'days').days);
 }
 
-/** Format an ISO timestamp for display in a target zone. */
+/**
+ * Format an ISO timestamp for display in a target zone, using the given
+ * BCP-47 locale (e.g. "fr-FR", "ar", "en-US"). Defaults to the device locale.
+ */
 export function formatTimestamp(
   iso: string,
   zone: string = deviceZone(),
+  locale?: string,
 ): string {
-  return DateTime.fromISO(iso, { zone }).toFormat('ccc d LLL, HH:mm');
+  const dt = DateTime.fromISO(iso, { zone });
+  return (locale ? dt.setLocale(locale) : dt).toFormat('ccc d LLL, HH:mm');
+}
+
+/** Locale-aware time-of-day formatting, e.g. "8:00 AM" / "08:00". */
+export function formatTimeOfDay(iso: string, locale?: string): string {
+  const dt = DateTime.fromISO(iso);
+  return (locale ? dt.setLocale(locale) : dt).toLocaleString(DateTime.TIME_SIMPLE);
 }
 
 /** Is `iso` inside the (possibly overnight) quiet-hours window? */
