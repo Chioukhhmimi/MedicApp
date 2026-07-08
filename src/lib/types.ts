@@ -113,6 +113,7 @@ export interface Settings {
   biometricLock: boolean;
   onboardingComplete: boolean;
   language: AppLanguage; // chosen UI language; defaults to French
+  colorScheme: 'light' | 'dark' | 'system';
 }
 
 /** Per-medication overrides for snooze behaviour (null = use global). */
@@ -132,4 +133,5 @@ export const DEFAULT_SETTINGS: Settings = {
   biometricLock: false,
   onboardingComplete: false,
   language: 'fr',
+  colorScheme: 'system',
 };
