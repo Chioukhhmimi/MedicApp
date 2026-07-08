@@ -1,53 +1,52 @@
 /**
- * Design tokens — Dosely brand identity (teal + coral).
+ * @deprecated Use @/theme/tokens and @/hooks/useTheme instead.
  *
- * Brand language: calming teal builds trust and signals health; warm coral
- * powers calls-to-action. Soft cream / mist neutrals keep screens clean.
- * Token names are preserved so existing callers don't need renaming —
- * only the underlying values move.
+ * This file is a backward-compatibility shim. All existing screen imports
+ * continue to work. New code should import from @/theme/tokens directly
+ * and use the useTheme() hook for dark-mode-aware values.
  */
 import { Platform, type ViewStyle } from 'react-native';
+import { light, primitives, typeScale, elevation } from '@/theme/tokens';
 
+/** @deprecated Use light or dark semantic tokens via useTheme() */
 export const colors = {
-  // Brand — teal family. Used for the logo, headings, app icon tile,
-  // health-positive signals ("taken"), and quiet accent surfaces.
-  brand: '#0E8C82',
-  brandBright: '#1FB8A6',
-  brandDeep: '#0B5A54',
-  brandInk: '#103D3A',
+  // Brand
+  brand: light.brand,
+  brandBright: primitives.teal100,
+  brandDeep: primitives.teal700,
+  brandInk: primitives.teal900,
 
-  // Action — coral. Reserved for primary CTAs and alerts per the brand guide.
-  primary: '#FF6B5E', // coral; fill color (use dark variant for text on white)
-  primaryDark: '#C8453A', // coral-ink, AA on white
-  primaryTint: '#FFE7E1', // soft tint card / chip background
+  // Action — coral (legacy, will be replaced by teal in Phase 3+)
+  primary: '#FF6B5E',
+  primaryDark: '#C8453A',
+  primaryTint: '#FFE7E1',
   coralSoft: '#FF8A6B',
 
-  // Neutrals & surfaces — paper canvas, cream cards, mist dividers.
-  background: '#FBFDFC', // paper
-  surface: '#FFFFFF',
-  surfaceMuted: '#F4F8F6', // cream
-  mist: '#E3EFEC', // soft teal-tint
-  text: '#103D3A', // ink
-  textMuted: '#5B8C87', // slate — AA on white & cream
-  border: '#E3EFEC',
-  white: '#FFFFFF',
+  // Neutrals & surfaces
+  background: light.bg,
+  surface: light.surface2,
+  surfaceMuted: primitives.grey50,
+  mist: primitives.teal50,
+  text: light.ink,
+  textMuted: light.inkMuted,
+  border: light.border,
+  white: primitives.white,
 
-  // Time-of-day chip accents (kept under existing names so the Today screen
-  // doesn't need touching). Mint = brand teal for "taken"; sky/lavender map
-  // to deeper teal shades to keep variety while staying on-brand.
-  accent: '#B86A1F', // amber — for "later"
+  // Time-of-day chip accents
+  accent: primitives.amber500,
   accentTint: '#FFE9C7',
-  sky: '#0E8C82', // teal for evening chip
-  skyTint: '#E3EFEC',
-  mint: '#0E8C82', // brand teal — "taken" status
+  sky: primitives.teal500,
+  skyTint: primitives.teal50,
+  mint: primitives.teal500,
   mintTint: '#DCF1E8',
-  lavender: '#0B5A54', // teal-deep — night chip
+  lavender: primitives.teal700,
 
   // Status
-  danger: '#B23A48', // red — AA on white
+  danger: light.danger,
   dangerTint: '#FBE3E6',
 } as const;
 
+/** @deprecated Use spacing from @/theme/tokens */
 export const spacing = {
   xs: 4,
   sm: 8,
@@ -57,6 +56,7 @@ export const spacing = {
   xxl: 48,
 } as const;
 
+/** @deprecated Use radius from @/theme/tokens */
 export const radius = {
   sm: 8,
   md: 14,
@@ -65,36 +65,37 @@ export const radius = {
   pill: 999,
 } as const;
 
+/** @deprecated Use typeScale from @/theme/tokens */
 export const fontSize = {
-  sm: 13,
-  body: 16,
+  sm: typeScale.label.fontSize,
+  body: typeScale.body.fontSize,
   lg: 20,
   xl: 28,
-  display: 34, // big "Worry less." style heading
+  display: typeScale.display.fontSize,
+} as const;
+
+export const textCaps = {
+  chrome: { maxFontSizeMultiplier: 1.3, allowFontScaling: true } as const,
+  numeric: { maxFontSizeMultiplier: 1.2, allowFontScaling: true } as const,
 } as const;
 
 /** Maps a user action to its semantic color. */
 export const actionColor: Record<string, string> = {
-  taken: colors.mint,
-  skipped: colors.danger,
-  later: colors.accent,
-  pending: colors.textMuted,
+  taken: light.success,
+  skipped: light.danger,
+  later: primitives.amber500,
+  pending: light.inkMuted,
 };
 
-/**
- * Time-of-day chip palette. Used on the Today list to colour-code groups.
- * Morning is warm coral; afternoon amber; evening cool teal; night deep teal.
- */
 export type TimeBucket = 'morning' | 'afternoon' | 'evening' | 'night';
 
 export const bucketChip: Record<TimeBucket, { bg: string; fg: string }> = {
-  morning: { bg: colors.primaryTint, fg: colors.primaryDark },
-  afternoon: { bg: colors.accentTint, fg: colors.accent },
-  evening: { bg: colors.mist, fg: colors.brand },
-  night: { bg: '#D8E5E2', fg: colors.brandDeep },
+  morning: { bg: '#FFE7E1', fg: '#C8453A' },
+  afternoon: { bg: '#FFE9C7', fg: primitives.amber500 },
+  evening: { bg: primitives.teal50, fg: light.brand },
+  night: { bg: '#D8E5E2', fg: primitives.teal700 },
 };
 
-/** Returns the time-of-day bucket for an "HH:mm" or full ISO timestamp. */
 export function bucketForHour(hour: number): TimeBucket {
   if (hour >= 5 && hour < 12) return 'morning';
   if (hour >= 12 && hour < 17) return 'afternoon';
@@ -102,7 +103,7 @@ export function bucketForHour(hour: number): TimeBucket {
   return 'night';
 }
 
-/** Soft elevated-card shadow. iOS uses native shadow props, Android falls back to elevation. */
+/** @deprecated Use elevation.sheet from @/theme/tokens */
 export const shadow: ViewStyle = Platform.select<ViewStyle>({
   ios: {
     shadowColor: '#063B37',
