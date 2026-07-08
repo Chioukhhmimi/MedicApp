@@ -134,7 +134,11 @@ export async function syncNotificationWindow(medId?: string): Promise<void> {
 export async function resolveOccurrence(
   occurrenceId: string,
   action: Exclude<UserAction, 'pending'>,
-  opts: { note?: string; source?: LogEntry['source'] } = {},
+  opts: {
+    note?: string;
+    source?: LogEntry['source'];
+    snoozeIntervalMin?: number;
+  } = {},
 ): Promise<Occurrence | null> {
   const occ = await getOccurrence(occurrenceId);
   if (!occ) return null;
@@ -167,7 +171,11 @@ export async function resolveOccurrence(
   // Skipped or Later -> plan the next snooze reminder.
   const settings = await getSettings();
   const override = await getSnoozeOverride(occ.medId);
-  const plan = planSnooze(occ, settings, override, nowIso);
+  // If user chose a specific snooze duration, use it as the interval
+  const effectiveSettings = opts.snoozeIntervalMin
+    ? { ...settings, defaultSnoozeIntervalMin: opts.snoozeIntervalMin }
+    : settings;
+  const plan = planSnooze(occ, effectiveSettings, override, nowIso);
   if (!plan) return null; // repeat cap reached — stop, no infinite loop.
 
   const med = await getMedication(occ.medId);

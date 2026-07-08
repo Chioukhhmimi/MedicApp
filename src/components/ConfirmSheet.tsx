@@ -30,7 +30,6 @@ import { Icon } from '@/components/Icon';
 import { useTheme } from '@/hooks/useTheme';
 import { getMedication, getOccurrence } from '@/services/database';
 import { resolveOccurrence } from '@/services/scheduleService';
-import { formatTimestamp } from '@/lib/dates';
 import { spacing, radius } from '@/theme/tokens';
 import type { Medication, Occurrence, UserAction } from '@/lib/types';
 
@@ -47,7 +46,10 @@ const SNOOZE_OPTIONS = [
   { label: '60 min', minutes: 60 },
 ];
 
-export function ConfirmSheet({ occurrenceId, onDone }: Props): React.JSX.Element {
+export function ConfirmSheet({
+  occurrenceId,
+  onDone,
+}: Props): React.JSX.Element {
   const theme = useTheme();
 
   const [occ, setOcc] = useState<Occurrence | null>(null);
@@ -86,9 +88,13 @@ export function ConfirmSheet({ occurrenceId, onDone }: Props): React.JSX.Element
   ): Promise<void> => {
     try {
       if (type === 'success')
-        await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+        await Haptics.notificationAsync(
+          Haptics.NotificationFeedbackType.Success,
+        );
       else if (type === 'warning')
-        await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+        await Haptics.notificationAsync(
+          Haptics.NotificationFeedbackType.Warning,
+        );
       else await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     } catch {
       // Expo Go fallback
@@ -107,6 +113,7 @@ export function ConfirmSheet({ occurrenceId, onDone }: Props): React.JSX.Element
       await resolveOccurrence(occ.id, action, {
         note: note.trim() || undefined,
         source: 'notification',
+        ...(snoozeMinutes ? { snoozeIntervalMin: snoozeMinutes } : {}),
       });
 
       if (action === 'taken') {
@@ -148,8 +155,19 @@ export function ConfirmSheet({ occurrenceId, onDone }: Props): React.JSX.Element
   if (phase === 'success') {
     return (
       <View style={styles.center}>
-        <Animated.View style={[styles.checkCircle, { backgroundColor: theme.brand }, checkStyle]}>
-          <Icon icon={Tick02Icon} size={40} color={theme.brandInk} strokeWidth={2.5} />
+        <Animated.View
+          style={[
+            styles.checkCircle,
+            { backgroundColor: theme.brand },
+            checkStyle,
+          ]}
+        >
+          <Icon
+            icon={Tick02Icon}
+            size={40}
+            color={theme.brandInk}
+            strokeWidth={2.5}
+          />
         </Animated.View>
       </View>
     );
@@ -192,7 +210,12 @@ export function ConfirmSheet({ occurrenceId, onDone }: Props): React.JSX.Element
           phase !== 'idle' && { opacity: 0.5 },
         ]}
       >
-        <Icon icon={Tick02Icon} size={24} color={theme.brandInk} strokeWidth={2.5} />
+        <Icon
+          icon={Tick02Icon}
+          size={24}
+          color={theme.brandInk}
+          strokeWidth={2.5}
+        />
         <Text variant="body" color={theme.brandInk} style={styles.takenLabel}>
           Taken
         </Text>
@@ -227,7 +250,12 @@ export function ConfirmSheet({ occurrenceId, onDone }: Props): React.JSX.Element
             accessibilityHint="Reminds you again after the snooze interval"
             style={styles.laterBtn}
           >
-            <Icon icon={Clock01Icon} size={18} color={theme.inkMuted} strokeWidth={2} />
+            <Icon
+              icon={Clock01Icon}
+              size={18}
+              color={theme.inkMuted}
+              strokeWidth={2}
+            />
             <Text variant="body" color={theme.inkMuted}>
               Later
             </Text>
@@ -244,7 +272,12 @@ export function ConfirmSheet({ occurrenceId, onDone }: Props): React.JSX.Element
           accessibilityHint="Logs a skip; reminders continue until taken"
           style={styles.skipBtn}
         >
-          <Icon icon={Cancel01Icon} size={18} color={theme.inkMuted} strokeWidth={2} />
+          <Icon
+            icon={Cancel01Icon}
+            size={18}
+            color={theme.inkMuted}
+            strokeWidth={2}
+          />
           <Text variant="body" color={theme.inkMuted}>
             Skip
           </Text>
@@ -280,7 +313,12 @@ export function ConfirmSheet({ occurrenceId, onDone }: Props): React.JSX.Element
           accessibilityLabel="Add a note"
           style={styles.addNoteBtn}
         >
-          <Icon icon={Add01Icon} size={16} color={theme.inkMuted} strokeWidth={2} />
+          <Icon
+            icon={Add01Icon}
+            size={16}
+            color={theme.inkMuted}
+            strokeWidth={2}
+          />
           <Text variant="label" color={theme.inkMuted}>
             Add a note
           </Text>
