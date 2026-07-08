@@ -43,13 +43,16 @@ export function Stepper({
     if (canInc) onChange(clamp(value + step));
   }, [canInc, value, step, onChange]);
 
-  const startRepeat = useCallback(
-    (fn: () => void) => {
-      fn();
-      repeatTimer.current = setInterval(fn, 200);
-    },
-    [],
-  );
+  const latestRepeatFn = useRef<(() => void) | null>(null);
+  latestRepeatFn.current = null;
+
+  const startRepeat = useCallback((fn: () => void) => {
+    latestRepeatFn.current = fn;
+    fn();
+    repeatTimer.current = setInterval(() => {
+      latestRepeatFn.current?.();
+    }, 200);
+  }, []);
 
   const stopRepeat = useCallback(() => {
     if (repeatTimer.current) {
@@ -58,6 +61,14 @@ export function Stepper({
     }
   }, []);
 
+  const handleAccessibilityAction = useCallback(
+    (event: { nativeEvent: { actionName: string } }) => {
+      if (event.nativeEvent.actionName === 'increment') inc();
+      if (event.nativeEvent.actionName === 'decrement') dec();
+    },
+    [inc, dec],
+  );
+
   const display = suffix ? `${value} ${suffix}` : String(value);
 
   return (
@@ -65,19 +76,16 @@ export function Stepper({
       style={[styles.row, style]}
       accessibilityRole="adjustable"
       accessibilityLabel={label ? `${label}, ${display}` : display}
+      accessibilityState={{ disabled: !canDec && !canInc }}
       accessibilityActions={[
         { name: 'increment', label: 'Increment' },
         { name: 'decrement', label: 'Decrement' },
       ]}
-      onAccessibilityAction={(event) => {
-        if (event.nativeEvent.actionName === 'increment') inc();
-        if (event.nativeEvent.actionName === 'decrement') dec();
-      }}
+      onAccessibilityAction={handleAccessibilityAction}
     >
       <Pressable
         onPress={dec}
         onLongPress={() => canDec && startRepeat(dec)}
-        onPressIn={() => {}}
         onPressOut={stopRepeat}
         disabled={!canDec}
         haptic="light"
@@ -99,7 +107,6 @@ export function Stepper({
       <Pressable
         onPress={inc}
         onLongPress={() => canInc && startRepeat(inc)}
-        onPressIn={() => {}}
         onPressOut={stopRepeat}
         disabled={!canInc}
         haptic="light"
