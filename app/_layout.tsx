@@ -8,6 +8,7 @@
  *  3. wires the notification-response listener so a tap deep-links to the
  *     Confirmation screen, and handles the cold-start case (Feature 11).
  */
+import 'react-native-gesture-handler';
 import React, { useEffect, useRef, useState } from 'react';
 import { Stack, useRouter } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -15,6 +16,7 @@ import * as Notifications from 'expo-notifications';
 import * as Updates from 'expo-updates';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useTranslation } from 'react-i18next';
 import { initMonitoring, reportError } from '@/services/monitoring';
 import {
@@ -107,37 +109,39 @@ export default function RootLayout(): React.JSX.Element | null {
   if (!ready) return null;
 
   return (
-    <SafeAreaProvider>
-      <StatusBar style="dark" />
-      <Stack
-        screenOptions={{
-          headerStyle: { backgroundColor: colors.background },
-          headerTintColor: colors.text,
-          headerTitleStyle: { fontWeight: '800' },
-          headerShadowVisible: false,
-          contentStyle: { backgroundColor: colors.background },
-        }}
-      >
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="onboarding" options={{ headerShown: false }} />
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen
-          name="medication/edit"
-          options={{
-            presentation: 'modal',
-            title: t('edit.title_edit'),
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <StatusBar style="dark" />
+        <Stack
+          screenOptions={{
+            headerStyle: { backgroundColor: colors.background },
+            headerTintColor: colors.text,
+            headerTitleStyle: { fontWeight: '800' },
+            headerShadowVisible: false,
+            contentStyle: { backgroundColor: colors.background },
           }}
-        />
-        <Stack.Screen
-          name="medication/[id]"
-          options={{ title: t('medication_detail.schedule') }}
-        />
-        <Stack.Screen
-          name="confirm"
-          options={{ presentation: 'modal', title: t('confirm.title') }}
-        />
-        <Stack.Screen name="export" options={{ title: t('history.export') }} />
-      </Stack>
-    </SafeAreaProvider>
+        >
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="onboarding" options={{ headerShown: false }} />
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="medication/edit"
+            options={{
+              presentation: 'modal',
+              title: t('edit.title_edit'),
+            }}
+          />
+          <Stack.Screen
+            name="medication/[id]"
+            options={{ title: t('medication_detail.schedule') }}
+          />
+          <Stack.Screen
+            name="confirm"
+            options={{ presentation: 'modal', title: t('confirm.title') }}
+          />
+          <Stack.Screen name="export" options={{ title: t('history.export') }} />
+        </Stack>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }
