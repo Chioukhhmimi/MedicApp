@@ -14,6 +14,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from '@/components/Button';
 import { useSettingsStore } from '@/store/useSettingsStore';
+import { useTheme } from '@/hooks/useTheme';
 import { colors, fontSize, radius, spacing } from '@/theme';
 
 function Row({
@@ -39,6 +40,9 @@ function Row({
 export default function SettingsScreen(): React.JSX.Element {
   const settings = useSettingsStore((s) => s.settings);
   const update = useSettingsStore((s) => s.update);
+  const colorScheme = useSettingsStore((s) => s.settings.colorScheme);
+  const toggleDarkMode = useSettingsStore((s) => s.toggleDarkMode);
+  const theme = useTheme();
   const [snooze, setSnooze] = useState(
     String(settings.defaultSnoozeIntervalMin),
   );
@@ -135,6 +139,35 @@ export default function SettingsScreen(): React.JSX.Element {
           label="Replay onboarding"
           variant="ghost"
           onPress={() => update({ onboardingComplete: false })}
+        />
+
+        <Text style={styles.group}>Appearance</Text>
+        <Row label="Dark mode">
+          <View
+            style={{
+              width: 51,
+              height: 31,
+              borderRadius: 16,
+              padding: 2,
+              backgroundColor: colorScheme === 'dark' ? theme.brand : colors.border,
+              justifyContent: 'center',
+            }}
+          >
+            <View
+              style={{
+                width: 27,
+                height: 27,
+                borderRadius: 14,
+                backgroundColor: '#fff',
+                transform: [{ translateX: colorScheme === 'dark' ? 20 : 0 }],
+              }}
+            />
+          </View>
+        </Row>
+        <Button
+          label={`Switch to ${colorScheme === 'dark' ? 'light' : 'dark'} mode`}
+          variant="ghost"
+          onPress={toggleDarkMode}
         />
       </ScrollView>
     </SafeAreaView>

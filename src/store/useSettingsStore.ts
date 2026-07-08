@@ -11,6 +11,7 @@ interface SettingsState {
   loaded: boolean;
   load: () => Promise<void>;
   update: (patch: Partial<Settings>) => Promise<void>;
+  toggleDarkMode: () => void;
 }
 
 export const useSettingsStore = create<SettingsState>((set, get) => ({
@@ -29,5 +30,11 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
       await setBiometricEnabled(patch.biometricLock);
     }
     set({ settings: next });
+  },
+
+  toggleDarkMode: () => {
+    const current = get().settings.colorScheme;
+    const next = current === 'dark' ? 'light' : 'dark';
+    void get().update({ colorScheme: next });
   },
 }));
