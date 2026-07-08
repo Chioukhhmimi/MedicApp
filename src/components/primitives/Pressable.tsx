@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   AccessibilityInfo,
   Pressable as RNPressable,
@@ -22,7 +22,10 @@ interface Props extends Omit<PressableProps, 'style'> {
   disableHaptics?: boolean;
 }
 
-const hapticMap: Record<string, Haptics.ImpactFeedbackStyle> = {
+const hapticMap: Record<
+  'light' | 'medium' | 'heavy',
+  Haptics.ImpactFeedbackStyle
+> = {
   light: Haptics.ImpactFeedbackStyle.Light,
   medium: Haptics.ImpactFeedbackStyle.Medium,
   heavy: Haptics.ImpactFeedbackStyle.Heavy,
@@ -39,14 +42,22 @@ export function Pressable({
   disableHaptics = false,
   accessibilityRole = 'button',
   hitSlop,
+  onPress: onPressProp,
   ...rest
 }: Props): React.JSX.Element {
-  const reduceMotion = useRef(false);
+  const [reduceMotion, setReduceMotion] = useState(false);
 
   useEffect(() => {
+    const sub = AccessibilityInfo.addEventListener(
+      'reduceMotionChanged',
+      (v) => {
+        setReduceMotion(v);
+      },
+    );
     void AccessibilityInfo.isReduceMotionEnabled().then((v) => {
-      reduceMotion.current = v;
+      setReduceMotion(v);
     });
+    return () => sub.remove();
   }, []);
 
   const fireHaptic = useCallback(
@@ -63,10 +74,13 @@ export function Pressable({
 
   const handlePress = useCallback(
     (event: import('react-native').GestureResponderEvent) => {
-      void fireHaptic(hapticMap[haptic] ?? Haptics.ImpactFeedbackStyle.Light);
-      rest.onPress?.(event);
+      if (destructive) return;
+      if (haptic !== 'none') {
+        void fireHaptic(hapticMap[haptic] ?? Haptics.ImpactFeedbackStyle.Light);
+      }
+      onPressProp?.(event);
     },
-    [haptic, fireHaptic, rest.onPress],
+    [haptic, fireHaptic, onPressProp, destructive],
   );
 
   const handleLongPress = useCallback(() => {
@@ -87,7 +101,7 @@ export function Pressable({
       style={({ pressed }) => [
         styles.base,
         { minHeight: minSize, minWidth: minSize },
-        !reduceMotion.current && pressed && styles.pressed,
+        !reduceMotion && pressed && styles.pressed,
         typeof style === 'function' ? style({ pressed }) : style,
       ]}
       {...rest}
