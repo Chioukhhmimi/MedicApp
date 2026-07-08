@@ -6,10 +6,12 @@ import {
   BottomSheetView,
   type BottomSheetModalProps,
 } from '@gorhom/bottom-sheet';
-import { Pressable, type PressableProps } from 'react-native';
 import { Cancel01Icon } from '@hugeicons/core-free-icons';
 import { useTheme } from '@/hooks/useTheme';
 import { Icon } from '@/components/Icon';
+import { Pressable } from '@/components/primitives/Pressable';
+import { Text } from '@/components/primitives/Text';
+import { spacing, radius } from '@/theme/tokens';
 
 export interface SheetRef {
   present: () => void;
@@ -55,30 +57,37 @@ const SheetInner = forwardRef<SheetRef, Props>(
         {...rest}
       >
         {closeIcon ? (
-          <BottomSheetView style={{ paddingHorizontal: 16, paddingTop: 16 }}>
+          <BottomSheetView style={{ paddingHorizontal: spacing[16], paddingTop: spacing[16] }}>
             <Pressable
               onPress={() => sheetRef.current?.dismiss()}
-              style={
-                {
-                  width: 32,
-                  height: 32,
-                  borderRadius: 16,
-                  backgroundColor: theme.surface2,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                } satisfies PressableProps['style']
-              }
+              minSize={44}
+              haptic="light"
+              accessibilityRole="button"
+              accessibilityLabel="Close"
+              style={{
+                width: 44,
+                height: 44,
+                borderRadius: radius[20],
+                backgroundColor: theme.surface2,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
             >
-              <Icon icon={Cancel01Icon} size={20} color={theme.inkMuted} strokeWidth={2} />
+              <Icon icon={Cancel01Icon} size={spacing[20]} color={theme.inkMuted} strokeWidth={2} />
             </Pressable>
           </BottomSheetView>
         ) : null}
+        {title ? (
+          <BottomSheetView style={{ paddingHorizontal: spacing[16], paddingTop: spacing[8] }}>
+            <Text variant="title">{title}</Text>
+          </BottomSheetView>
+        ) : null}
         {scroll ? (
-          <BottomSheetScrollView contentContainerStyle={{ padding: 16, paddingBottom: 40 }}>
+          <BottomSheetScrollView contentContainerStyle={{ padding: spacing[16], paddingBottom: 40 }}>
             {children}
           </BottomSheetScrollView>
         ) : (
-          <BottomSheetView style={{ padding: 16, paddingBottom: 40 }}>{children}</BottomSheetView>
+          <BottomSheetView style={{ padding: spacing[16], paddingBottom: 40 }}>{children}</BottomSheetView>
         )}
       </BottomSheetModal>
     );
