@@ -10,6 +10,7 @@ import { PlusSignIcon } from '@hugeicons/core-free-icons';
 import { MedicationCard } from '@/components/MedicationCard';
 import { EmptyState } from '@/components/EmptyState';
 import { Button } from '@/components/Button';
+import { MedicationsSkeleton } from '@/components/Skeleton';
 import { useMedStore } from '@/store/useMedStore';
 import { describeRule } from '@/lib/scheduler';
 import { colors, fontSize, spacing } from '@/theme';
@@ -19,9 +20,11 @@ export default function Medications(): React.JSX.Element {
   const router = useRouter();
   const { t } = useTranslation();
   const medications = useMedStore((s) => s.medications);
+  const loading = useMedStore((s) => s.loading);
   const refresh = useMedStore((s) => s.refresh);
   const getRules = useMedStore((s) => s.getRules);
   const [summaries, setSummaries] = useState<Record<string, string>>({});
+  const firstLoad = loading && medications.length === 0;
 
   useFocusEffect(
     useCallback(() => {
@@ -53,6 +56,14 @@ export default function Medications(): React.JSX.Element {
     { title: t('medications.section_active'), data: active },
     { title: t('medications.section_paused'), data: paused },
   ].filter((s) => s.data.length > 0);
+
+  if (firstLoad) {
+    return (
+      <SafeAreaView style={styles.safe} edges={['bottom']}>
+        <MedicationsSkeleton />
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.safe} edges={['bottom']}>

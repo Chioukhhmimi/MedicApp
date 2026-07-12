@@ -63,6 +63,7 @@ app/confirm.tsx (screen — thin wrapper, opens Sheet)
 ## Interaction Flow
 
 ### Taken (primary action)
+
 1. **0ms:** Button press → medium haptic fires
 2. **0–250ms:** Button background morphs to a checkmark circle (Reanimated `withTiming`)
 3. **250ms:** Checkmark fully visible, confirmation haptic
@@ -70,19 +71,23 @@ app/confirm.tsx (screen — thin wrapper, opens Sheet)
 5. **650ms:** Sheet dismissed, screen returns to previous state
 
 ### Later (snooze)
+
 1. Tap "Later" → snooze duration chips appear inline (10m / 30m / 60m)
 2. Select a duration → light haptic → `resolveOccurrence` with `action: 'later'`
 3. Success: toast "Reminded at HH:mm" → auto-close 1400ms
 
 ### Skip
+
 1. Tap "Skip" → light haptic → `resolveOccurrence` with `action: 'skipped'`
 2. Immediate close (no toast)
 
 ### Note
+
 1. Tap "+ Add a note" → TextInput expands below
 2. Optional — note is passed to `resolveOccurrence` if non-empty
 
 ### Drag dismiss
+
 - Disallowed — user must pick an action (Taken / Later / Skip)
 
 ## Success Animation
@@ -98,6 +103,7 @@ Uses `react-native-reanimated` for the Taken button morph:
 ```
 
 **Timing:**
+
 - Check morph: 250ms (`withTiming`)
 - Confirmation haptic at 250ms
 - Sheet dismiss: 400ms (`withTiming`)
@@ -143,6 +149,7 @@ ConfirmSheet.act(action, duration?)
 ## Theme Migration
 
 ConfirmSheet uses new primitives exclusively:
+
 - `useTheme()` for all colors (dark mode support)
 - `Text` variant-based component
 - `Pressable` with haptics
@@ -153,6 +160,7 @@ ConfirmSheet uses new primitives exclusively:
 ## Scope
 
 **In scope:**
+
 - `src/components/ConfirmSheet.tsx` — full sheet content component
 - `app/confirm.tsx` — rewrite to use Sheet wrapper
 - Snooze duration chips (10m / 30m / 60m)
@@ -161,6 +169,7 @@ ConfirmSheet uses new primitives exclusively:
 - Haptics on all actions
 
 **Deferred:**
+
 - Inline confirm gesture on Today (swipe-to-confirm) — Phase 4
 - Streak badge / recap — Phase 4
 - Today rework (NextDoseHero, progress strip) — separate Phase 3 task

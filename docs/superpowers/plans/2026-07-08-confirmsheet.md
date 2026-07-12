@@ -20,20 +20,22 @@
 
 ## File Structure
 
-| File | Action | Purpose |
-|------|--------|---------|
-| `src/components/ConfirmSheet.tsx` | Create | Sheet content component |
-| `app/confirm.tsx` | Rewrite | Thin Sheet wrapper |
-| `src/tests/confirmsheet.test.ts` | Create | Unit tests for action logic |
+| File                              | Action  | Purpose                     |
+| --------------------------------- | ------- | --------------------------- |
+| `src/components/ConfirmSheet.tsx` | Create  | Sheet content component     |
+| `app/confirm.tsx`                 | Rewrite | Thin Sheet wrapper          |
+| `src/tests/confirmsheet.test.ts`  | Create  | Unit tests for action logic |
 
 ---
 
 ### Task 1: Create ConfirmSheet Component
 
 **Files:**
+
 - Create: `src/components/ConfirmSheet.tsx`
 
 **Interfaces:**
+
 - Consumes: `getOccurrence(id)` from `@/services/database`, `getMedication(id)` from `@/services/database`, `resolveOccurrence(id, action, opts)` from `@/services/scheduleService`, `formatTimestamp(iso)` from `@/lib/dates`, `useTheme()` from `@/hooks/useTheme`
 - Produces: `<ConfirmSheet occurrenceId={string} />` component
 
@@ -89,7 +91,10 @@ const SNOOZE_OPTIONS = [
   { label: '60 min', minutes: 60 },
 ];
 
-export function ConfirmSheet({ occurrenceId, onDone }: Props): React.JSX.Element {
+export function ConfirmSheet({
+  occurrenceId,
+  onDone,
+}: Props): React.JSX.Element {
   const theme = useTheme();
 
   const [occ, setOcc] = useState<Occurrence | null>(null);
@@ -128,9 +133,13 @@ export function ConfirmSheet({ occurrenceId, onDone }: Props): React.JSX.Element
   ): Promise<void> => {
     try {
       if (type === 'success')
-        await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+        await Haptics.notificationAsync(
+          Haptics.NotificationFeedbackType.Success,
+        );
       else if (type === 'warning')
-        await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+        await Haptics.notificationAsync(
+          Haptics.NotificationFeedbackType.Warning,
+        );
       else await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     } catch {
       // Expo Go fallback
@@ -190,8 +199,19 @@ export function ConfirmSheet({ occurrenceId, onDone }: Props): React.JSX.Element
   if (phase === 'success') {
     return (
       <View style={styles.center}>
-        <Animated.View style={[styles.checkCircle, { backgroundColor: theme.brand }, checkStyle]}>
-          <Icon icon={Tick02Icon} size={40} color={theme.white} strokeWidth={2.5} />
+        <Animated.View
+          style={[
+            styles.checkCircle,
+            { backgroundColor: theme.brand },
+            checkStyle,
+          ]}
+        >
+          <Icon
+            icon={Tick02Icon}
+            size={40}
+            color={theme.white}
+            strokeWidth={2.5}
+          />
         </Animated.View>
       </View>
     );
@@ -234,7 +254,12 @@ export function ConfirmSheet({ occurrenceId, onDone }: Props): React.JSX.Element
           phase !== 'idle' && { opacity: 0.5 },
         ]}
       >
-        <Icon icon={Tick02Icon} size={24} color={theme.white} strokeWidth={2.5} />
+        <Icon
+          icon={Tick02Icon}
+          size={24}
+          color={theme.white}
+          strokeWidth={2.5}
+        />
         <Text variant="body" color={theme.white} style={styles.takenLabel}>
           Taken
         </Text>
@@ -269,7 +294,12 @@ export function ConfirmSheet({ occurrenceId, onDone }: Props): React.JSX.Element
             accessibilityHint="Reminds you again after the snooze interval"
             style={styles.laterBtn}
           >
-            <Icon icon={Clock01Icon} size={18} color={theme.inkMuted} strokeWidth={2} />
+            <Icon
+              icon={Clock01Icon}
+              size={18}
+              color={theme.inkMuted}
+              strokeWidth={2}
+            />
             <Text variant="body" color={theme.inkMuted}>
               Later
             </Text>
@@ -286,7 +316,12 @@ export function ConfirmSheet({ occurrenceId, onDone }: Props): React.JSX.Element
           accessibilityHint="Logs a skip; reminders continue until taken"
           style={styles.skipBtn}
         >
-          <Icon icon={Cancel01Icon} size={18} color={theme.inkMuted} strokeWidth={2} />
+          <Icon
+            icon={Cancel01Icon}
+            size={18}
+            color={theme.inkMuted}
+            strokeWidth={2}
+          />
           <Text variant="body" color={theme.inkMuted}>
             Skip
           </Text>
@@ -322,7 +357,12 @@ export function ConfirmSheet({ occurrenceId, onDone }: Props): React.JSX.Element
           accessibilityLabel="Add a note"
           style={styles.addNoteBtn}
         >
-          <Icon icon={Add01Icon} size={16} color={theme.inkMuted} strokeWidth={2} />
+          <Icon
+            icon={Add01Icon}
+            size={16}
+            color={theme.inkMuted}
+            strokeWidth={2}
+          />
           <Text variant="label" color={theme.inkMuted}>
             Add a note
           </Text>
@@ -436,9 +476,11 @@ git commit -m "feat: add ConfirmSheet bottom sheet component"
 ### Task 2: Rewrite app/confirm.tsx
 
 **Files:**
+
 - Modify: `app/confirm.tsx` (full rewrite)
 
 **Interfaces:**
+
 - Consumes: `ConfirmSheet` from `@/components/ConfirmSheet`, `Sheet` from `@/components/primitives/Sheet`, `useRouter` from `expo-router`, `useLocalSearchParams` from `expo-router`, `dismiss` from `@/lib/navigation`
 
 - [ ] **Step 1: Rewrite confirm.tsx**
@@ -525,9 +567,11 @@ git commit -m "feat(confirm): rewrite to use Sheet wrapper with ConfirmSheet"
 ### Task 3: Write Unit Tests
 
 **Files:**
+
 - Create: `src/tests/confirmsheet.test.ts`
 
 **Interfaces:**
+
 - Consumes: same as Task 1
 - Produces: passing tests for action logic
 
@@ -597,7 +641,11 @@ describe('ConfirmSheet action logic', () => {
   });
 
   it('calls resolveOccurrence with later action and returns child', async () => {
-    const child = { ...mockOccurrence, id: 'occ-child', scheduledTime: DateTime.utc().plus({ minutes: 30 }).toISO()! };
+    const child = {
+      ...mockOccurrence,
+      id: 'occ-child',
+      scheduledTime: DateTime.utc().plus({ minutes: 30 }).toISO()!,
+    };
     (resolveOccurrence as jest.Mock).mockResolvedValue(child);
     expect(true).toBe(true);
   });
@@ -658,11 +706,11 @@ git commit -m "chore: format and lint fixes"
 
 ## Summary
 
-| Task | Description | Files |
-|------|-------------|-------|
-| 1 | Create ConfirmSheet component | `src/components/ConfirmSheet.tsx` |
-| 2 | Rewrite app/confirm.tsx | `app/confirm.tsx` |
-| 3 | Write unit tests | `src/tests/confirmsheet.test.ts` |
-| 4 | Verify full build | — |
+| Task | Description                   | Files                             |
+| ---- | ----------------------------- | --------------------------------- |
+| 1    | Create ConfirmSheet component | `src/components/ConfirmSheet.tsx` |
+| 2    | Rewrite app/confirm.tsx       | `app/confirm.tsx`                 |
+| 3    | Write unit tests              | `src/tests/confirmsheet.test.ts`  |
+| 4    | Verify full build             | —                                 |
 
 **Estimated lines:** ~350 new, ~50 modified

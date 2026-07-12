@@ -139,7 +139,10 @@ export default function RootLayout(): React.JSX.Element | null {
             name="confirm"
             options={{ presentation: 'modal', title: t('confirm.title') }}
           />
-          <Stack.Screen name="export" options={{ title: t('history.export') }} />
+          <Stack.Screen
+            name="export"
+            options={{ title: t('history.export') }}
+          />
         </Stack>
       </SafeAreaProvider>
     </GestureHandlerRootView>

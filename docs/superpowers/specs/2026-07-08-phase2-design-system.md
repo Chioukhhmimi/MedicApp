@@ -17,15 +17,15 @@ Build the design system foundation that all subsequent phases consume. This mean
 
 ## 2. Decisions Made
 
-| Decision | Choice | Rationale |
-|---|---|---|
-| Theme architecture | Zustand-derived `useTheme()` hook | Consistent with existing Zustand stores, no extra provider, efficient subscriptions |
-| Art direction | Full Ambient Minimal (Option C) | Matches DESIGN.md. Teal primary, grayscale chrome, status-only colors |
-| Dark mode | Extend `useSettingsStore` with `colorScheme` field | One store, one source of truth, persists across launches |
-| Pressable | Replace `Touchable` with enhanced `Pressable` (haptics, long-press, reduce-motion) | DESIGN.md requirement, adds haptic feedback for core habit loop |
-| Text | Variant-based (`display`, `title`, `h3`, `body`, `label`, `mono`) | Enforces type scale, prevents inconsistency |
-| File organization | One file per primitive in `src/components/primitives/` | Follows existing pattern (Button.tsx, Touchable.tsx) |
-| Sheet | Install `@gorhom/bottom-sheet` + deps now | Ready for Phase 3 ConfirmSheet |
+| Decision           | Choice                                                                             | Rationale                                                                           |
+| ------------------ | ---------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| Theme architecture | Zustand-derived `useTheme()` hook                                                  | Consistent with existing Zustand stores, no extra provider, efficient subscriptions |
+| Art direction      | Full Ambient Minimal (Option C)                                                    | Matches DESIGN.md. Teal primary, grayscale chrome, status-only colors               |
+| Dark mode          | Extend `useSettingsStore` with `colorScheme` field                                 | One store, one source of truth, persists across launches                            |
+| Pressable          | Replace `Touchable` with enhanced `Pressable` (haptics, long-press, reduce-motion) | DESIGN.md requirement, adds haptic feedback for core habit loop                     |
+| Text               | Variant-based (`display`, `title`, `h3`, `body`, `label`, `mono`)                  | Enforces type scale, prevents inconsistency                                         |
+| File organization  | One file per primitive in `src/components/primitives/`                             | Follows existing pattern (Button.tsx, Touchable.tsx)                                |
+| Sheet              | Install `@gorhom/bottom-sheet` + deps now                                          | Ready for Phase 3 ConfirmSheet                                                      |
 
 ---
 
@@ -145,7 +145,7 @@ export const dark: SemanticTokens = {
   ink: '#ECF1EF',
   inkMuted: '#8FA09C',
   inkQuiet: '#667470',
-  brand: primitives.teal500,   // brand never inverts
+  brand: primitives.teal500, // brand never inverts
   brandInk: primitives.white,
   danger: primitives.red500,
   warning: primitives.amber500,
@@ -160,34 +160,52 @@ export const dark: SemanticTokens = {
 
 ```ts
 export const spacing = {
-  4: 4, 8: 8, 12: 12, 16: 16, 20: 20, 24: 24, 32: 32, 48: 48,
+  4: 4,
+  8: 8,
+  12: 12,
+  16: 16,
+  20: 20,
+  24: 24,
+  32: 32,
+  48: 48,
 } as const;
 
 export const radius = {
-  8: 8,     // inputs
-  12: 12,   // cards
-  20: 20,   // sheets
-  999: 999,  // pills
+  8: 8, // inputs
+  12: 12, // cards
+  20: 20, // sheets
+  999: 999, // pills
 } as const;
 
 export const typeScale = {
   display: { fontSize: 36, lineHeight: 40, fontWeight: '600' as const },
-  title:   { fontSize: 22, lineHeight: 28, fontWeight: '600' as const },
-  h3:      { fontSize: 17, lineHeight: 22, fontWeight: '600' as const },
-  body:    { fontSize: 15, lineHeight: 22, fontWeight: '400' as const },
-  label:   { fontSize: 13, lineHeight: 18, fontWeight: '500' as const },
-  mono:    { fontSize: 15, lineHeight: 22, fontWeight: '400' as const, fontVariant: ['tabular-nums'] as const },
+  title: { fontSize: 22, lineHeight: 28, fontWeight: '600' as const },
+  h3: { fontSize: 17, lineHeight: 22, fontWeight: '600' as const },
+  body: { fontSize: 15, lineHeight: 22, fontWeight: '400' as const },
+  label: { fontSize: 13, lineHeight: 18, fontWeight: '500' as const },
+  mono: {
+    fontSize: 15,
+    lineHeight: 22,
+    fontWeight: '400' as const,
+    fontVariant: ['tabular-nums'] as const,
+  },
 } as const;
 
 export const elevation = {
   none: {},
   pressed: {
-    shadowColor: '#000', shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.04, shadowRadius: 2, elevation: 1,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.04,
+    shadowRadius: 2,
+    elevation: 1,
   },
   sheet: {
-    shadowColor: '#000', shadowOffset: { width: 0, height: 12 },
-    shadowOpacity: 0.10, shadowRadius: 24, elevation: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 12 },
+    shadowOpacity: 0.1,
+    shadowRadius: 24,
+    elevation: 8,
   },
 } as const;
 ```
@@ -201,10 +219,11 @@ import { useSettingsStore } from '@/store/useSettingsStore';
 import { light, dark, type SemanticTokens } from '@/theme/tokens';
 
 export function useTheme(): SemanticTokens {
-  const colorScheme = useSettingsStore(s => s.settings.colorScheme);
+  const colorScheme = useSettingsStore((s) => s.settings.colorScheme);
   const systemScheme = useColorScheme();
 
-  const mode = colorScheme === 'system' ? (systemScheme ?? 'light') : colorScheme;
+  const mode =
+    colorScheme === 'system' ? (systemScheme ?? 'light') : colorScheme;
   return mode === 'dark' ? dark : light;
 }
 ```
@@ -241,8 +260,12 @@ export const actionColor: Record<string, string> = {
 
 // Time-of-day bucket types (unchanged, consumed by Today screen)
 export type TimeBucket = 'morning' | 'afternoon' | 'evening' | 'night';
-export const bucketChip = { /* ... */ };
-export function bucketForHour(hour: number): TimeBucket { /* ... */ }
+export const bucketChip = {
+  /* ... */
+};
+export function bucketForHour(hour: number): TimeBucket {
+  /* ... */
+}
 ```
 
 All existing screen imports (`import { colors, spacing } from '@/theme'`) continue to work.
@@ -261,8 +284,8 @@ Variant-based. Enforces the type scale via presets.
 interface Props extends TextProps {
   variant?: 'display' | 'title' | 'h3' | 'body' | 'label' | 'mono';
   color?: string;
-  muted?: boolean;     // inkMuted
-  quiet?: boolean;     // inkQuiet
+  muted?: boolean; // inkMuted
+  quiet?: boolean; // inkQuiet
   center?: boolean;
   maxFontSizeMultiplier?: number;
   children: React.ReactNode;
@@ -287,26 +310,26 @@ Replaces `Touchable`. Adds haptics, long-press for destructive, reduce-motion fa
 interface Props extends Omit<PressableProps, 'style'> {
   children: React.ReactNode;
   style?: StyleProp<ViewStyle> | StyleFn;
-  minSize?: number;                        // default 44
-  haptic?: 'light' | 'medium' | 'heavy' | 'none';  // default 'light'
-  longPressHaptic?: 'medium' | 'heavy';              // default 'medium'
+  minSize?: number; // default 44
+  haptic?: 'light' | 'medium' | 'heavy' | 'none'; // default 'light'
+  longPressHaptic?: 'medium' | 'heavy'; // default 'medium'
   onLongPress?: () => void;
-  destructive?: boolean;                   // long-press required
-  disableHaptics?: boolean;                // global kill switch
+  destructive?: boolean; // long-press required
+  disableHaptics?: boolean; // global kill switch
 }
 ```
 
 **Behavior:**
 
-| Feature | Detail |
-|---|---|
-| Default haptic | `Haptics.ImpactFeedbackStyle.Light` on press |
-| Medium haptic | For primary actions (e.g., Taken button) |
-| Heavy haptic | For destructive confirmation |
-| `destructive` + `onLongPress` | Requires 500ms hold. Medium haptic on trigger. |
-| Reduce motion | Checked via `AccessibilityInfo.isReduceMotionEnabled()`. If active: opacity stays 1, haptics still fire. |
-| hitSlop | Default 8pt |
-| Visual feedback | `opacity: 0.85` on press (unless reduce-motion active) |
+| Feature                       | Detail                                                                                                   |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------- |
+| Default haptic                | `Haptics.ImpactFeedbackStyle.Light` on press                                                             |
+| Medium haptic                 | For primary actions (e.g., Taken button)                                                                 |
+| Heavy haptic                  | For destructive confirmation                                                                             |
+| `destructive` + `onLongPress` | Requires 500ms hold. Medium haptic on trigger.                                                           |
+| Reduce motion                 | Checked via `AccessibilityInfo.isReduceMotionEnabled()`. If active: opacity stays 1, haptics still fire. |
+| hitSlop                       | Default 8pt                                                                                              |
+| Visual feedback               | `opacity: 0.85` on press (unless reduce-motion active)                                                   |
 
 **Dependencies:** `expo-haptics`
 
@@ -319,24 +342,25 @@ Surface component. Dark-mode-aware via `useTheme()`.
 ```tsx
 interface Props {
   children: React.ReactNode;
-  onPress?: () => void;       // if provided, wraps in Pressable
-  padding?: number;            // default spacing[16]
+  onPress?: () => void; // if provided, wraps in Pressable
+  padding?: number; // default spacing[16]
   style?: StyleProp<ViewStyle>;
-  elevated?: boolean;          // sheet-level shadow
-  border?: boolean;            // default true
+  elevated?: boolean; // sheet-level shadow
+  border?: boolean; // default true
 }
 ```
 
 **Variants:**
 
-| Configuration | Use Case |
-|---|---|
-| Default (border, not elevated) | List rows, settings rows, standard cards |
-| `elevated` | Modal sheets, overlays — uses `elevation.sheet` |
-| `border={false}` | Flat groups within a surface |
-| `onPress` | Interactive — wraps in `Pressable` with light haptic |
+| Configuration                  | Use Case                                             |
+| ------------------------------ | ---------------------------------------------------- |
+| Default (border, not elevated) | List rows, settings rows, standard cards             |
+| `elevated`                     | Modal sheets, overlays — uses `elevation.sheet`      |
+| `border={false}`               | Flat groups within a surface                         |
+| `onPress`                      | Interactive — wraps in `Pressable` with light haptic |
 
 **Surface hierarchy enforcement:**
+
 - `bg` → applied by screen layout (SafeAreaView background)
 - `surface1` → `Card` default
 - `surface2` → `Card elevated`
@@ -356,7 +380,7 @@ interface Props {
   label: string;
   selected?: boolean;
   onPress?: () => void;
-  variant?: ChipVariant;       // default 'selectable'
+  variant?: ChipVariant; // default 'selectable'
   icon?: React.ReactNode;
   onDismiss?: () => void;
   disabled?: boolean;
@@ -365,15 +389,16 @@ interface Props {
 
 **Variants:**
 
-| Variant | Visual | Use Case |
-|---|---|---|
-| `selectable` | Outline → brand fill on select | Snooze duration, schedule type |
-| `filter` | Outline → brand fill + dismiss × | History range, per-med filter |
-| `input` | surface1 fill + dismiss × | Time chips in ScheduleEditor |
+| Variant      | Visual                           | Use Case                       |
+| ------------ | -------------------------------- | ------------------------------ |
+| `selectable` | Outline → brand fill on select   | Snooze duration, schedule type |
+| `filter`     | Outline → brand fill + dismiss × | History range, per-med filter  |
+| `input`      | surface1 fill + dismiss ×        | Time chips in ScheduleEditor   |
 
 **Styling:** `borderRadius: 999` (pill), `minHeight: 40`, `paddingHorizontal: 16`.
 
 **Accessibility:**
+
 - `accessibilityRole="checkbox"`
 - `accessibilityState={{ checked: selected }}`
 - Dismiss button: `accessibilityLabel="Remove ${label}"`
@@ -388,11 +413,11 @@ Numeric input with +/- buttons.
 interface Props {
   value: number;
   onChange: (value: number) => void;
-  min?: number;                 // default 0
-  max?: number;                 // default 999
-  step?: number;                // default 1
+  min?: number; // default 0
+  max?: number; // default 999
+  step?: number; // default 1
   label?: string;
-  suffix?: string;              // e.g. "min", "times"
+  suffix?: string; // e.g. "min", "times"
 }
 ```
 
@@ -406,6 +431,7 @@ interface Props {
 - `onChange` fires per step, not on blur
 
 **Accessibility:**
+
 - `accessibilityRole="adjustable"`
 - `accessibilityActions={['increment', 'decrement']}`
 
@@ -419,16 +445,18 @@ Bottom sheet using `@gorhom/bottom-sheet`.
 interface Props extends Omit<BottomSheetModalProps, 'children'> {
   children: React.ReactNode;
   title?: string;
-  snapPoints?: (string | number)[];  // default ['70%']
+  snapPoints?: (string | number)[]; // default ['70%']
 }
 ```
 
 **Dependencies:**
+
 - `@gorhom/bottom-sheet`
 - `react-native-gesture-handler`
 - `react-native-reanimated`
 
 **Styling:**
+
 - `backgroundStyle`: `theme.surface2`, `borderRadius: radius[20]`
 - `handleIndicatorStyle`: `theme.border` color, 40pt wide
 - Backdrop: `rgba(0,0,0,0.4)`, press-to-dismiss
@@ -497,7 +525,7 @@ Add dark-mode-aware StatusBar:
 ```tsx
 const theme = useTheme();
 const isDark = theme.bg === '#0B0F0F';
-<StatusBar style={isDark ? 'light' : 'dark'} />
+<StatusBar style={isDark ? 'light' : 'dark'} />;
 ```
 
 ---

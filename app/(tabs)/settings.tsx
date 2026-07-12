@@ -149,7 +149,8 @@ export default function SettingsScreen(): React.JSX.Element {
               height: 31,
               borderRadius: 16,
               padding: 2,
-              backgroundColor: colorScheme === 'dark' ? theme.brand : colors.border,
+              backgroundColor:
+                colorScheme === 'dark' ? theme.brand : colors.border,
               justifyContent: 'center',
             }}
           >

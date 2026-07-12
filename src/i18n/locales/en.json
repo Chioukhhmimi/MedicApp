@@ -144,8 +144,8 @@
     "missing_title": "Reminder unavailable",
     "missing_message": "This dose could not be found — it may have been removed.",
     "result_taken": "Dose logged. Nice work!",
-    "result_next": "Okay — we'll remind you again at {{time}}.",
-    "result_capped": "Logged. The snooze limit was reached, so no more reminders for this dose."
+    "result_next": "Reminder set for {{time}}.",
+    "result_capped": "Logged. Snooze limit reached — no more reminders for this dose."
   },
   "history": {
     "range_7": "7 days",

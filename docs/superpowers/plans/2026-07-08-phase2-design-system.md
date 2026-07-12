@@ -22,6 +22,7 @@
 ## Task 1: Install Dependencies
 
 **Files:**
+
 - Modify: `package.json`
 - Modify: `babel.config.js`
 
@@ -82,9 +83,11 @@ git commit -m "chore: install expo-haptics, bottom-sheet, gesture-handler, reani
 ## Task 2: Create Theme Tokens
 
 **Files:**
+
 - Create: `src/theme/tokens.ts`
 
 **Interfaces:**
+
 - Produces: `primitives`, `SemanticTokens` type, `light`, `dark`, `spacing`, `radius`, `typeScale`, `elevation`
 
 - [ ] **Step 1: Create `src/theme/` directory**
@@ -288,9 +291,11 @@ git commit -m "feat(theme): add two-layer token system with light/dark semantic 
 ## Task 3: Create Theme Index
 
 **Files:**
+
 - Create: `src/theme/index.ts`
 
 **Interfaces:**
+
 - Produces: re-exports from `tokens.ts` for clean import paths
 
 - [ ] **Step 1: Create `src/theme/index.ts`**
@@ -326,9 +331,11 @@ git commit -m "feat(theme): add theme barrel export"
 ## Task 4: Create Deprecated Theme Shim
 
 **Files:**
+
 - Modify: `src/theme.ts` (replace contents)
 
 **Interfaces:**
+
 - Consumes: `light`, `primitives`, `spacing`, `radius`, `typeScale`, `elevation` from `@/theme/tokens`
 - Produces: backward-compatible exports (`colors`, `spacing`, `radius`, `fontSize`, `textCaps`, `actionColor`, `shadow`, `TimeBucket`, `bucketChip`, `bucketForHour`)
 
@@ -345,7 +352,14 @@ Write the complete file:
  * and use the useTheme() hook for dark-mode-aware values.
  */
 import { Platform, type ViewStyle } from 'react-native';
-import { light, primitives, spacing, radius, typeScale, elevation } from '@/theme/tokens';
+import {
+  light,
+  primitives,
+  spacing,
+  radius,
+  typeScale,
+  elevation,
+} from '@/theme/tokens';
 
 /** @deprecated Use light or dark semantic tokens via useTheme() */
 export const colors = {
@@ -457,9 +471,11 @@ git commit -m "refactor(theme): replace with deprecated backward-compat shim"
 ## Task 5: Create useTheme Hook
 
 **Files:**
+
 - Create: `src/hooks/useTheme.ts`
 
 **Interfaces:**
+
 - Consumes: `settings.colorScheme` from `useSettingsStore`, `light`, `dark` from `@/theme/tokens`
 - Produces: `useTheme()` → `SemanticTokens`
 
@@ -503,9 +519,11 @@ git commit -m "feat(hooks): add useTheme() hook for dark-mode-aware token access
 ## Task 6: Extend Settings Type
 
 **Files:**
+
 - Modify: `src/lib/types.ts:106-135`
 
 **Interfaces:**
+
 - Consumes: nothing
 - Produces: `Settings.colorScheme`, `DEFAULT_SETTINGS.colorScheme`
 
@@ -565,9 +583,11 @@ git commit -m "feat(types): add colorScheme field to Settings for dark mode"
 ## Task 7: Create Text Primitive
 
 **Files:**
+
 - Create: `src/components/primitives/Text.tsx`
 
 **Interfaces:**
+
 - Consumes: `useTheme()` from `@/hooks/useTheme`, `typeScale` from `@/theme/tokens`
 - Produces: `Text` component with `variant`, `color`, `muted`, `quiet`, `center`, `maxFontSizeMultiplier` props
 
@@ -627,7 +647,12 @@ export function Text({
     <RNText
       {...rest}
       maxFontSizeMultiplier={maxFontSizeMultiplier}
-      style={[preset, { color: resolvedColor }, center && { textAlign: 'center' }, style]}
+      style={[
+        preset,
+        { color: resolvedColor },
+        center && { textAlign: 'center' },
+        style,
+      ]}
     >
       {children}
     </RNText>
@@ -653,9 +678,11 @@ git commit -m "feat(primitives): add variant-based Text component"
 ## Task 8: Create Pressable Primitive
 
 **Files:**
+
 - Create: `src/components/primitives/Pressable.tsx`
 
 **Interfaces:**
+
 - Consumes: `expo-haptics`
 - Produces: `Pressable` component with haptic, long-press, reduce-motion, minSize, destructive props
 
@@ -787,9 +814,11 @@ git commit -m "feat(primitives): add Pressable with haptics, long-press, reduce-
 ## Task 9: Create Card Primitive
 
 **Files:**
+
 - Create: `src/components/primitives/Card.tsx`
 
 **Interfaces:**
+
 - Consumes: `useTheme()` from `@/hooks/useTheme`, `Pressable` from `@/components/primitives/Pressable`, `spacing`, `radius`, `elevation` from `@/theme/tokens`
 - Produces: `Card` component with `onPress`, `padding`, `elevated`, `border` props
 
@@ -868,9 +897,11 @@ git commit -m "feat(primitives): add Card with surface hierarchy and dark mode"
 ## Task 10: Create Chip Primitive
 
 **Files:**
+
 - Create: `src/components/primitives/Chip.tsx`
 
 **Interfaces:**
+
 - Consumes: `Pressable` from `@/components/primitives/Pressable`, `Text` from `@/components/primitives/Text`, `useTheme()` from `@/hooks/useTheme`, `spacing`, `radius` from `@/theme/tokens`
 - Produces: `Chip` component with `selectable`/`filter`/`input` variants
 
@@ -906,7 +937,8 @@ export function Chip({
   const theme = useTheme();
 
   const isSelected = selected;
-  const showDismiss = onDismiss && (variant === 'filter' || variant === 'input');
+  const showDismiss =
+    onDismiss && (variant === 'filter' || variant === 'input');
 
   const bgColor = (() => {
     if (disabled) return theme.surface1;
@@ -1007,9 +1039,11 @@ git commit -m "feat(primitives): add Chip with selectable/filter/input variants"
 ## Task 11: Create Stepper Primitive
 
 **Files:**
+
 - Create: `src/components/primitives/Stepper.tsx`
 
 **Interfaces:**
+
 - Consumes: `Pressable` from `@/components/primitives/Pressable`, `Text` from `@/components/primitives/Text`, `useTheme()` from `@/hooks/useTheme`, `spacing`, `radius` from `@/theme/tokens`, Hugeicons `MinusSignIcon`/`PlusSignIcon`
 - Produces: `Stepper` component with +/- buttons, long-press repeat, accessibility actions
 
@@ -1061,13 +1095,10 @@ export function Stepper({
     if (canInc) onChange(clamp(value + step));
   }, [canInc, value, step, onChange]);
 
-  const startRepeat = useCallback(
-    (fn: () => void) => {
-      fn();
-      repeatTimer.current = setInterval(fn, 200);
-    },
-    [],
-  );
+  const startRepeat = useCallback((fn: () => void) => {
+    fn();
+    repeatTimer.current = setInterval(fn, 200);
+  }, []);
 
   const stopRepeat = useCallback(() => {
     if (repeatTimer.current) {
@@ -1100,7 +1131,11 @@ export function Stepper({
         disabled={!canDec}
         haptic="light"
         minSize={44}
-        style={[styles.btn, { borderColor: theme.border }, !canDec && styles.btnDisabled]}
+        style={[
+          styles.btn,
+          { borderColor: theme.border },
+          !canDec && styles.btnDisabled,
+        ]}
       >
         <Icon
           icon={MinusSignIcon}
@@ -1122,7 +1157,11 @@ export function Stepper({
         disabled={!canInc}
         haptic="light"
         minSize={44}
-        style={[styles.btn, { borderColor: theme.border }, !canInc && styles.btnDisabled]}
+        style={[
+          styles.btn,
+          { borderColor: theme.border },
+          !canInc && styles.btnDisabled,
+        ]}
       >
         <Icon
           icon={PlusSignIcon}
@@ -1172,9 +1211,11 @@ git commit -m "feat(primitives): add Stepper with +/- buttons, long-press repeat
 ## Task 12: Create Sheet Primitive
 
 **Files:**
+
 - Create: `src/components/primitives/Sheet.tsx`
 
 **Interfaces:**
+
 - Consumes: `@gorhom/bottom-sheet`, `useTheme()` from `@/hooks/useTheme`, `Text` from `@/components/primitives/Text`, `spacing`, `radius` from `@/theme/tokens`
 - Produces: `Sheet` component wrapping BottomSheetModal
 
@@ -1199,64 +1240,60 @@ interface Props extends Omit<BottomSheetModalProps, 'children'> {
   snapPoints?: (string | number)[];
 }
 
-export const Sheet = forwardRef<BottomSheetModal, Props>(
-  function Sheet(
-    { children, title, snapPoints = ['70%'], ...rest },
-    ref,
-  ): React.JSX.Element {
-    const theme = useTheme();
+export const Sheet = forwardRef<BottomSheetModal, Props>(function Sheet(
+  { children, title, snapPoints = ['70%'], ...rest },
+  ref,
+): React.JSX.Element {
+  const theme = useTheme();
 
-    const renderBackdrop = useCallback(
-      (props: any) => (
-        <BottomSheetBackdrop
-          {...props}
-          disappearsOnIndex={-1}
-          appearsOnIndex={0}
-          opacity={0.4}
-        />
-      ),
-      [],
-    );
+  const renderBackdrop = useCallback(
+    (props: any) => (
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={-1}
+        appearsOnIndex={0}
+        opacity={0.4}
+      />
+    ),
+    [],
+  );
 
-    const backgroundStyle = useMemo(
-      () => ({
-        backgroundColor: theme.surface2,
-        borderRadius: radius[20],
-      }),
-      [theme.surface2],
-    );
+  const backgroundStyle = useMemo(
+    () => ({
+      backgroundColor: theme.surface2,
+      borderRadius: radius[20],
+    }),
+    [theme.surface2],
+  );
 
-    const handleIndicatorStyle = useMemo(
-      () => ({
-        backgroundColor: theme.border,
-        width: 40,
-      }),
-      [theme.border],
-    );
+  const handleIndicatorStyle = useMemo(
+    () => ({
+      backgroundColor: theme.border,
+      width: 40,
+    }),
+    [theme.border],
+  );
 
-    return (
-      <BottomSheetModal
-        ref={ref}
-        snapPoints={snapPoints}
-        backdropComponent={renderBackdrop}
-        backgroundStyle={backgroundStyle}
-        handleIndicatorStyle={handleIndicatorStyle}
-        {...rest}
-      >
-        <BottomSheetScrollView
-          contentContainerStyle={styles.content}
-        >
-          {title ? (
-            <Text variant="h3" style={styles.title}>
-              {title}
-            </Text>
-          ) : null}
-          {children}
-        </BottomSheetScrollView>
-      </BottomSheetModal>
-    );
-  },
-);
+  return (
+    <BottomSheetModal
+      ref={ref}
+      snapPoints={snapPoints}
+      backdropComponent={renderBackdrop}
+      backgroundStyle={backgroundStyle}
+      handleIndicatorStyle={handleIndicatorStyle}
+      {...rest}
+    >
+      <BottomSheetScrollView contentContainerStyle={styles.content}>
+        {title ? (
+          <Text variant="h3" style={styles.title}>
+            {title}
+          </Text>
+        ) : null}
+        {children}
+      </BottomSheetScrollView>
+    </BottomSheetModal>
+  );
+});
 
 const styles = StyleSheet.create({
   content: {
@@ -1287,9 +1324,11 @@ git commit -m "feat(primitives): add Sheet (bottom-sheet wrapper) with dark mode
 ## Task 13: Update Touchable to Re-export Pressable
 
 **Files:**
+
 - Modify: `src/components/Touchable.tsx`
 
 **Interfaces:**
+
 - Consumes: `Pressable` from `@/components/primitives/Pressable`
 - Produces: `Touchable` as a re-export for backward compatibility
 
@@ -1318,9 +1357,11 @@ git commit -m "refactor: deprecate Touchable, re-export Pressable"
 ## Task 14: Update Root Layout
 
 **Files:**
+
 - Modify: `app/_layout.tsx`
 
 **Interfaces:**
+
 - Consumes: `GestureHandlerRootView` from `react-native-gesture-handler`, `useTheme()` from `@/hooks/useTheme`
 - Produces: Root layout with gesture handler wrapper and dark-aware StatusBar
 
@@ -1403,9 +1444,11 @@ git commit -m "feat(layout): wrap root with GestureHandlerRootView for bottom-sh
 ## Task 15: Add Dark Mode Toggle to Settings
 
 **Files:**
+
 - Modify: `app/(tabs)/settings.tsx`
 
 **Interfaces:**
+
 - Consumes: `SegmentedControl` from `@/components/SegmentedControl`, `useSettingsStore`
 - Produces: Appearance row with Light/Dark/System segmented control
 
@@ -1499,23 +1542,23 @@ git commit -m "chore: Phase 2 design system verification fixes"
 
 ## Summary
 
-| Task | Deliverable | Dependencies |
-|---|---|---|
-| 1 | Dependencies installed | None |
-| 2 | `src/theme/tokens.ts` | None |
-| 3 | `src/theme/index.ts` | Task 2 |
-| 4 | `src/theme.ts` shim | Task 2 |
-| 5 | `src/hooks/useTheme.ts` | Task 2, Task 6 |
-| 6 | `Settings.colorScheme` | None |
-| 7 | `Text` primitive | Task 2, Task 5 |
-| 8 | `Pressable` primitive | Task 1 |
-| 9 | `Card` primitive | Task 7, Task 8, Task 2 |
-| 10 | `Chip` primitive | Task 7, Task 8, Task 2 |
-| 11 | `Stepper` primitive | Task 7, Task 8, Task 2 |
-| 12 | `Sheet` primitive | Task 1, Task 7, Task 2 |
-| 13 | `Touchable` re-export | Task 8 |
-| 14 | Root layout update | Task 1 |
-| 15 | Settings dark mode toggle | Task 6 |
-| 16 | Full verification | All tasks |
+| Task | Deliverable               | Dependencies           |
+| ---- | ------------------------- | ---------------------- |
+| 1    | Dependencies installed    | None                   |
+| 2    | `src/theme/tokens.ts`     | None                   |
+| 3    | `src/theme/index.ts`      | Task 2                 |
+| 4    | `src/theme.ts` shim       | Task 2                 |
+| 5    | `src/hooks/useTheme.ts`   | Task 2, Task 6         |
+| 6    | `Settings.colorScheme`    | None                   |
+| 7    | `Text` primitive          | Task 2, Task 5         |
+| 8    | `Pressable` primitive     | Task 1                 |
+| 9    | `Card` primitive          | Task 7, Task 8, Task 2 |
+| 10   | `Chip` primitive          | Task 7, Task 8, Task 2 |
+| 11   | `Stepper` primitive       | Task 7, Task 8, Task 2 |
+| 12   | `Sheet` primitive         | Task 1, Task 7, Task 2 |
+| 13   | `Touchable` re-export     | Task 8                 |
+| 14   | Root layout update        | Task 1                 |
+| 15   | Settings dark mode toggle | Task 6                 |
+| 16   | Full verification         | All tasks              |
 
 **Parallelizable:** Tasks 2+6, 7+8, 9+10+11+12 can run in parallel.

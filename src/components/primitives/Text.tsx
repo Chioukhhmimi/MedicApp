@@ -47,7 +47,12 @@ export function Text({
     <RNText
       {...rest}
       maxFontSizeMultiplier={maxFontSizeMultiplier}
-      style={[preset, { color: resolvedColor }, center && { textAlign: 'center' }, style]}
+      style={[
+        preset,
+        { color: resolvedColor },
+        center && { textAlign: 'center' },
+        style,
+      ]}
     >
       {children}
     </RNText>

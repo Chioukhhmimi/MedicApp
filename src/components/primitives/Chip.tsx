@@ -27,7 +27,8 @@ export function Chip({
   const theme = useTheme();
 
   const isSelected = selected;
-  const showDismiss = onDismiss && (variant === 'filter' || variant === 'input');
+  const showDismiss =
+    onDismiss && (variant === 'filter' || variant === 'input');
 
   const bgColor = (() => {
     if (disabled) return theme.surface1;

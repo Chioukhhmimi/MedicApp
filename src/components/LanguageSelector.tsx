@@ -29,7 +29,10 @@ interface Props {
   onChange: (lang: Language) => void;
 }
 
-export function LanguageSelector({ value, onChange }: Props): React.JSX.Element {
+export function LanguageSelector({
+  value,
+  onChange,
+}: Props): React.JSX.Element {
   const { t } = useTranslation();
 
   // Render in the canonical order regardless of which language is active.

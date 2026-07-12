@@ -90,7 +90,11 @@ export function Stepper({
         disabled={!canDec}
         haptic="light"
         minSize={44}
-        style={[styles.btn, { borderColor: theme.border }, !canDec && styles.btnDisabled]}
+        style={[
+          styles.btn,
+          { borderColor: theme.border },
+          !canDec && styles.btnDisabled,
+        ]}
       >
         <Icon
           icon={MinusSignIcon}
@@ -111,7 +115,11 @@ export function Stepper({
         disabled={!canInc}
         haptic="light"
         minSize={44}
-        style={[styles.btn, { borderColor: theme.border }, !canInc && styles.btnDisabled]}
+        style={[
+          styles.btn,
+          { borderColor: theme.border },
+          !canInc && styles.btnDisabled,
+        ]}
       >
         <Icon
           icon={PlusSignIcon}

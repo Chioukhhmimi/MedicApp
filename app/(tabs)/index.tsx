@@ -27,6 +27,7 @@ import { EmptyState } from '@/components/EmptyState';
 import { Button } from '@/components/Button';
 import { Icon } from '@/components/Icon';
 import { Logo } from '@/components/Logo';
+import { TodaySkeleton } from '@/components/Skeleton';
 import { useUpcoming, type UpcomingItem } from '@/hooks/useUpcoming';
 import { useLocale } from '@/hooks/useLocale';
 import { formatTimeOfDay, formatTimestamp } from '@/lib/dates';
@@ -38,6 +39,7 @@ import {
   radius,
   shadow,
   spacing,
+  textCaps,
   type TimeBucket,
 } from '@/theme';
 
@@ -53,6 +55,8 @@ export default function Home(): React.JSX.Element {
   const { t } = useTranslation();
   const locale = useLocale();
   const { items, loading, reload } = useUpcoming(2);
+  // Show the skeleton only on the first load, not on every pull-to-refresh.
+  const firstLoad = loading && items.length === 0;
 
   // Refresh whenever the tab regains focus (e.g. after confirming a dose).
   useFocusEffect(
@@ -94,8 +98,10 @@ export default function Home(): React.JSX.Element {
       >
         <View style={styles.header}>
           <Logo size={36} />
-          <Text style={styles.kicker}>{greeting}</Text>
-          <Text style={styles.title}>
+          <Text {...textCaps.chrome} style={styles.kicker}>
+            {greeting}
+          </Text>
+          <Text {...textCaps.numeric} style={styles.title}>
             {t('today.title_line1')}
             {'\n'}
             <Text style={styles.titleAccent}>{t('today.title_line2')}</Text>
@@ -103,7 +109,9 @@ export default function Home(): React.JSX.Element {
           <Text style={styles.subtitle}>{t('today.subtitle')}</Text>
         </View>
 
-        {groups.length === 0 && !loading ? (
+        {firstLoad ? (
+          <TodaySkeleton />
+        ) : groups.length === 0 ? (
           <View style={styles.empty}>
             <EmptyState
               title={t('today.empty_title')}
@@ -150,7 +158,10 @@ function BucketSection({
   return (
     <View style={styles.section}>
       <View style={[styles.chip, { backgroundColor: chip.bg }]}>
-        <Text style={[styles.chipText, { color: chip.fg }]}>
+        <Text
+          {...textCaps.chrome}
+          style={[styles.chipText, { color: chip.fg }]}
+        >
           {t(`buckets.${group.bucket}`)}
         </Text>
       </View>
@@ -209,11 +220,16 @@ function ReminderRow({
         </Text>
       </View>
       <View style={styles.timeWrap}>
-        <Text style={[styles.time, isOverdue && styles.overdueText]}>
+        <Text
+          {...textCaps.numeric}
+          style={[styles.time, isOverdue && styles.overdueText]}
+        >
           {formatTimeOfDay(occurrence.scheduledTime, locale)}
         </Text>
         {isOverdue ? (
-          <Text style={styles.overdueTag}>{t('today.overdue')}</Text>
+          <Text {...textCaps.chrome} style={styles.overdueTag}>
+            {t('today.overdue')}
+          </Text>
         ) : null}
       </View>
     </Pressable>

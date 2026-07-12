@@ -1,0 +1,10 @@
+﻿# Review package: 7085247..28969d0
+
+## Commits
+28969d0 feat: add colorScheme field to Settings type for dark mode support
+
+## Files changed
+ src/lib/types.ts | 2 ++  1 file changed, 2 insertions(+)
+
+## Diff
+diff --git a/src/lib/types.ts b/src/lib/types.ts index b4d1c60..8e546bf 100644 --- a/src/lib/types.ts +++ b/src/lib/types.ts @@ -106,30 +106,32 @@ export type AppLanguage = 'fr' | 'en' | 'ar';  export interface Settings {    defaultSnoozeIntervalMin: number; // minutes between snooze reminders    maxSnoozeRepeats: number; // hard cap to prevent infinite loops    quietHoursEnabled: boolean;    quietHoursStart: string; // "HH:mm"    quietHoursEnd: string; // "HH:mm"    notificationSound: string; // "default" or a bundled sound key    biometricLock: boolean;    onboardingComplete: boolean;    language: AppLanguage; // chosen UI language; defaults to French +  colorScheme: 'light' | 'dark' | 'system';  }    /** Per-medication overrides for snooze behaviour (null = use global). */  export interface MedicationSnoozeOverride {    medId: string;    snoozeIntervalMin: number | null;    maxSnoozeRepeats: number | null;  }    export const DEFAULT_SETTINGS: Settings = {    defaultSnoozeIntervalMin: 30,    maxSnoozeRepeats: 6,    quietHoursEnabled: false,    quietHoursStart: '22:00',    quietHoursEnd: '07:00',    notificationSound: 'default',    biometricLock: false,    onboardingComplete: false,    language: 'fr', +  colorScheme: 'system',  };

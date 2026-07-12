@@ -14,7 +14,9 @@
       "Bash(npm ls *)",
       "Bash(npm run *)",
       "PowerShell($ProgressPreference='SilentlyContinue'; Invoke-WebRequest -Uri 'https://cdn.dribbble.com/userupload/42145311/file/original-4cc04121fefba36c6cc1a4ae37d8d805.png?resize=1600x1200' -OutFile 'D:\\\\mobile app\\\\.cache-design-ref.png' -UseBasicParsing; \\(Get-Item 'D:\\\\mobile app\\\\.cache-design-ref.png'\\).Length)",
-      "Bash(node scripts/generate-icons.mjs)"
+      "Bash(node scripts/generate-icons.mjs)",
+      "PowerShell(if \\($env:EXPO_TOKEN\\) { \"EXPO_TOKEN is set \\(len=$\\($env:EXPO_TOKEN.Length\\)\\)\" } else { \"EXPO_TOKEN is NOT set\" })",
+      "Bash(npm test *)"
     ]
   }
 }

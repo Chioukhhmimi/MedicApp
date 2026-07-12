@@ -6,7 +6,7 @@
  * and use the useTheme() hook for dark-mode-aware values.
  */
 import { Platform, type ViewStyle } from 'react-native';
-import { light, primitives, typeScale, elevation } from '@/theme/tokens';
+import { light, primitives, typeScale } from '@/theme/tokens';
 
 /** @deprecated Use light or dark semantic tokens via useTheme() */
 export const colors = {

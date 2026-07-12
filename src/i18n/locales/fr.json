@@ -144,8 +144,8 @@
     "missing_title": "Rappel indisponible",
     "missing_message": "Cette prise est introuvable — elle a peut-être été supprimée.",
     "result_taken": "Prise enregistrée. Bravo !",
-    "result_next": "Très bien — nous vous rappellerons à nouveau à {{time}}.",
-    "result_capped": "Enregistré. La limite de rappels a été atteinte, plus aucun rappel pour cette prise."
+    "result_next": "Rappel programmé à {{time}}.",
+    "result_capped": "Enregistré. Limite de rappels atteinte — plus aucun rappel pour cette prise."
   },
   "history": {
     "range_7": "7 jours",

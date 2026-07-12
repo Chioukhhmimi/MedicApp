@@ -53,7 +53,9 @@ export function formatTimestamp(
 /** Locale-aware time-of-day formatting, e.g. "8:00 AM" / "08:00". */
 export function formatTimeOfDay(iso: string, locale?: string): string {
   const dt = DateTime.fromISO(iso);
-  return (locale ? dt.setLocale(locale) : dt).toLocaleString(DateTime.TIME_SIMPLE);
+  return (locale ? dt.setLocale(locale) : dt).toLocaleString(
+    DateTime.TIME_SIMPLE,
+  );
 }
 
 /** Is `iso` inside the (possibly overnight) quiet-hours window? */

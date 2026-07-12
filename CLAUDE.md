@@ -47,7 +47,7 @@ Absolute imports use `@/` → `src/` (configured in both `tsconfig.json` paths a
 
 The scheduler is the deterministic core. Understand this before touching anything in `src/lib/scheduler.ts` or `src/services/scheduleService.ts`:
 
-1. **`ScheduleRule`** (`src/lib/types.ts`) describes *when* a medication is due. Four types: `daily | weekly | interval | pattern`. Each rule carries its own IANA `timezone` — all wall-clock math goes through Luxon so DST transitions stay at the correct local time.
+1. **`ScheduleRule`** (`src/lib/types.ts`) describes _when_ a medication is due. Four types: `daily | weekly | interval | pattern`. Each rule carries its own IANA `timezone` — all wall-clock math goes through Luxon so DST transitions stay at the correct local time.
 2. **`src/lib/scheduler.ts`** is pure: `nextOccurrence`, `occurrencesBetween`, `generateUpcoming`. No I/O. All DST and timezone behavior is locked in by `src/tests/scheduler.test.ts` — change with care.
 3. **`src/services/scheduleService.ts`** is the orchestrator:
    - `ensureHorizon()` runs on every cold start (`app/_layout.tsx`) and pre-generates occurrences **60 days ahead** into SQLite.
@@ -68,14 +68,18 @@ The scheduler is the deterministic core. Understand this before touching anythin
 - Calendar dates: `'YYYY-MM-DD'` strings (no time/zone).
 - Timestamps: full ISO 8601 UTC (e.g. `2026-05-19T07:00:00.000Z`).
 - IDs come from `newId(prefix)` in `src/lib/id.ts`.
-- SQLite schema and migrations live in `src/services/database.ts`. The same module owns all queries — do not write SQL elsewhere.
+- SQLite schema and migrations live in `src/services/database.ts` — the same module owns all queries; do not write SQL elsewhere.
 
 ## Testing
 
-`jest.config.js` only matches `src/tests/**/*.test.ts` and `collectCoverageFrom` is restricted to `src/lib/**` and `src/services/**`. Screens are not unit-tested; logic going into screens that *should* be tested belongs in `src/lib/` first.
+`jest.config.js` only matches `src/tests/**/*.test.ts` and `collectCoverageFrom` is restricted to `src/lib/**` and `src/services/**`. Screens are not unit-tested; logic going into screens that _should_ be tested belongs in `src/lib/` first.
 
 `expo-notifications` is mocked — see `jest.setup.ts` and `src/tests/notifications.test.ts` for the pattern.
 
 ## Future backend sync
 
 `api/openapi.yaml` and `src/services/syncApi.ts` are a **stub** — not wired into the app. The local data model is designed to add sync later without migration. Until then the app must remain fully functional offline; do not introduce runtime network dependencies.
+
+## Design
+
+Product-design guidance lives in [`DESIGN.md`](./DESIGN.md) — audit, design system, art direction, screen-by-screen plan, and the redesign roadmap (Phases 1–6). This file (CLAUDE.md) owns functional/architectural rules only. Consult DESIGN.md before touching UI, adding components, or picking colors / spacing / typography.

@@ -9,6 +9,7 @@ import { DateTime } from 'luxon';
 import { Download04Icon, InboxIcon } from '@hugeicons/core-free-icons';
 import { Button } from '@/components/Button';
 import { EmptyState } from '@/components/EmptyState';
+import { HistorySkeleton } from '@/components/Skeleton';
 import { SegmentedControl } from '@/components/SegmentedControl';
 import { getLogs, getOccurrencesBetween } from '@/services/database';
 import { computeAdherence, type AdherenceSummary } from '@/lib/adherence';
@@ -20,6 +21,7 @@ import {
   radius,
   shadow,
   spacing,
+  textCaps,
 } from '@/theme';
 import type { LogEntry } from '@/lib/types';
 
@@ -50,6 +52,16 @@ export default function History(): React.JSX.Element {
     }, [load]),
   );
 
+  // First-load: no summary yet means we haven't finished the initial fetch.
+  // On range changes the summary stays populated so we don't flash the skeleton.
+  if (!summary) {
+    return (
+      <SafeAreaView style={styles.safe} edges={['bottom']}>
+        <HistorySkeleton />
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.safe} edges={['bottom']}>
       <FlatList
@@ -69,28 +81,47 @@ export default function History(): React.JSX.Element {
             />
             {summary && (
               <View style={[styles.card, shadow]}>
-                <Text style={styles.cardKicker}>Your adherence</Text>
-                <Text style={styles.pct}>{summary.adherencePct}%</Text>
+                <Text {...textCaps.chrome} style={styles.cardKicker}>
+                  Your adherence
+                </Text>
+                <Text {...textCaps.numeric} style={styles.pct}>
+                  {summary.adherencePct}%
+                </Text>
                 <View style={styles.statsRow}>
                   <View style={styles.statBlock}>
-                    <Text style={[styles.statValue, { color: colors.mint }]}>
+                    <Text
+                      {...textCaps.numeric}
+                      style={[styles.statValue, { color: colors.mint }]}
+                    >
                       {summary.taken}
                     </Text>
-                    <Text style={styles.statLabel}>Taken</Text>
+                    <Text {...textCaps.chrome} style={styles.statLabel}>
+                      Taken
+                    </Text>
                   </View>
                   <View style={styles.statDivider} />
                   <View style={styles.statBlock}>
-                    <Text style={[styles.statValue, { color: colors.danger }]}>
+                    <Text
+                      {...textCaps.numeric}
+                      style={[styles.statValue, { color: colors.danger }]}
+                    >
                       {summary.skipped}
                     </Text>
-                    <Text style={styles.statLabel}>Skipped</Text>
+                    <Text {...textCaps.chrome} style={styles.statLabel}>
+                      Skipped
+                    </Text>
                   </View>
                   <View style={styles.statDivider} />
                   <View style={styles.statBlock}>
-                    <Text style={[styles.statValue, { color: colors.accent }]}>
+                    <Text
+                      {...textCaps.numeric}
+                      style={[styles.statValue, { color: colors.accent }]}
+                    >
                       {summary.missed}
                     </Text>
-                    <Text style={styles.statLabel}>Missed</Text>
+                    <Text {...textCaps.chrome} style={styles.statLabel}>
+                      Missed
+                    </Text>
                   </View>
                 </View>
               </View>

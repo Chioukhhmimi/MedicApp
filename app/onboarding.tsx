@@ -20,7 +20,6 @@ import { useTranslation } from 'react-i18next';
 import {
   CheckmarkCircle02Icon,
   Notification03Icon,
-  WavingHand01Icon,
 } from '@hugeicons/core-free-icons';
 import { Button } from '@/components/Button';
 import { Icon, type IconSvgElement } from '@/components/Icon';

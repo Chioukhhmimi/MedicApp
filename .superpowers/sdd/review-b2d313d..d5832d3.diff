@@ -1,0 +1,10 @@
+﻿# Review package: b2d313d..d5832d3
+
+## Commits
+d5832d3 feat(theme): add theme barrel export
+
+## Files changed
+ src/theme/index.ts | 10 ++++++++++  1 file changed, 10 insertions(+)
+
+## Diff
+diff --git a/src/theme/index.ts b/src/theme/index.ts new file mode 100644 index 0000000..c315715 --- /dev/null +++ b/src/theme/index.ts @@ -0,0 +1,10 @@ +export { +  primitives, +  light, +  dark, +  spacing, +  radius, +  typeScale, +  elevation, +  type SemanticTokens, +} from './tokens'; \ No newline at end of file

@@ -91,7 +91,9 @@ export function ScheduleEditor({
             keyboardType="number-pad"
             value={String(value.intervalDays ?? '')}
             onChangeText={(text) =>
-              set({ intervalDays: text ? Math.max(1, Number(text)) : undefined })
+              set({
+                intervalDays: text ? Math.max(1, Number(text)) : undefined,
+              })
             }
             accessibilityLabel={t('schedule.interval_label')}
             placeholder={t('schedule.interval_placeholder')}

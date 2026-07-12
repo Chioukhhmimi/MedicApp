@@ -13,16 +13,12 @@
       "resizeMode": "contain",
       "backgroundColor": "#0E8C82"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.dosely.app",
       "infoPlist": {
-        "UIBackgroundModes": [
-          "remote-notification"
-        ]
+        "UIBackgroundModes": ["remote-notification"]
       }
     },
     "android": {
@@ -60,7 +56,11 @@
     "extra": {
       "router": {
         "origin": false
+      },
+      "eas": {
+        "projectId": "bad7551f-addd-4cb4-89d8-12f96449c172"
       }
-    }
+    },
+    "owner": "hmimichioukh"
   }
 }

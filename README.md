@@ -7,7 +7,7 @@ recurrence rules, get local-notification reminders, confirm doses
 adherence history as CSV or PDF.
 
 > **Privacy first** — all data lives in an on-device SQLite database. The app
-> works with zero network access. Nothing is uploaded unless *you* export a file.
+> works with zero network access. Nothing is uploaded unless _you_ export a file.
 
 ---
 
@@ -32,19 +32,19 @@ adherence history as CSV or PDF.
 
 ## Features
 
-| # | Feature | Where |
-|---|---------|-------|
-| 1 | Medication CRUD, grouped active/paused | `app/(tabs)/medications.tsx`, `app/medication/*` |
-| 2 | Scheduling engine — daily / weekly / interval / binary pattern | `src/lib/scheduler.ts` |
-| 3 | One or more reminder times per medication | `src/components/TimePickerList.tsx` |
-| 4 | Local notifications + deep link into a pre-filled confirmation screen | `src/services/notifications.ts`, `app/confirm.tsx` |
-| 5 | Taken / Skipped / Later + 30-min snooze loop (capped) | `src/lib/snooze.ts`, `src/services/scheduleService.ts` |
-| 6 | Immutable history, adherence %, CSV/PDF export | `src/lib/adherence.ts`, `src/lib/export.ts`, `app/export.tsx` |
-| 7 | Edit/cancel future occurrences (with multi-dose warning) | `app/medication/[id].tsx` |
-| 8 | Onboarding flow + accessibility (labels, large text, AA contrast) | `app/onboarding.tsx`, `src/theme.ts` |
-| 9 | Global + per-medication settings | `app/(tabs)/settings.tsx` |
-| 10 | Privacy: explained permission prompt, secure storage, local-only mode | `src/services/secureStore.ts` |
-| 11 | Edge cases: timezone/DST, reboot, cold start, offline | `src/lib/dates.ts`, `app/_layout.tsx` |
+| #   | Feature                                                               | Where                                                         |
+| --- | --------------------------------------------------------------------- | ------------------------------------------------------------- |
+| 1   | Medication CRUD, grouped active/paused                                | `app/(tabs)/medications.tsx`, `app/medication/*`              |
+| 2   | Scheduling engine — daily / weekly / interval / binary pattern        | `src/lib/scheduler.ts`                                        |
+| 3   | One or more reminder times per medication                             | `src/components/TimePickerList.tsx`                           |
+| 4   | Local notifications + deep link into a pre-filled confirmation screen | `src/services/notifications.ts`, `app/confirm.tsx`            |
+| 5   | Taken / Skipped / Later + 30-min snooze loop (capped)                 | `src/lib/snooze.ts`, `src/services/scheduleService.ts`        |
+| 6   | Immutable history, adherence %, CSV/PDF export                        | `src/lib/adherence.ts`, `src/lib/export.ts`, `app/export.tsx` |
+| 7   | Edit/cancel future occurrences (with multi-dose warning)              | `app/medication/[id].tsx`                                     |
+| 8   | Onboarding flow + accessibility (labels, large text, AA contrast)     | `app/onboarding.tsx`, `src/theme.ts`                          |
+| 9   | Global + per-medication settings                                      | `app/(tabs)/settings.tsx`                                     |
+| 10  | Privacy: explained permission prompt, secure storage, local-only mode | `src/services/secureStore.ts`                                 |
+| 11  | Edge cases: timezone/DST, reboot, cold start, offline                 | `src/lib/dates.ts`, `app/_layout.tsx`                         |
 
 ---
 
@@ -150,25 +150,25 @@ A strict one-way dependency flow keeps logic testable:
 ## The scheduling engine
 
 `src/lib/scheduler.ts` is the deterministic core. A `ScheduleRule` describes
-*active calendar days* (in its own IANA timezone) plus reminder `times`:
+_active calendar days_ (in its own IANA timezone) plus reminder `times`:
 
-| Type | Params | Example |
-|------|--------|---------|
-| `daily` | `times[]` | 08:00 & 20:00 every day |
-| `weekly` | `weekdays[]` (1=Mon…7=Sun) | Mon & Fri at 09:00 |
-| `interval` | `intervalDays` | every 14 days |
-| `pattern` | `pattern[]` of 0/1 | `[1,0]` = every other day |
+| Type       | Params                     | Example                   |
+| ---------- | -------------------------- | ------------------------- |
+| `daily`    | `times[]`                  | 08:00 & 20:00 every day   |
+| `weekly`   | `weekdays[]` (1=Mon…7=Sun) | Mon & Fri at 09:00        |
+| `interval` | `intervalDays`             | every 14 days             |
+| `pattern`  | `pattern[]` of 0/1         | `[1,0]` = every other day |
 
 Key functions:
 
 ```ts
-nextOccurrence(rule, after)        // -> next due ISO-UTC timestamp | null
-occurrencesBetween(rule, from, to) // -> all due timestamps in [from, to)
-generateUpcoming(rule, fromIso, n) // -> pre-generate n days ahead
+nextOccurrence(rule, after); // -> next due ISO-UTC timestamp | null
+occurrencesBetween(rule, from, to); // -> all due timestamps in [from, to)
+generateUpcoming(rule, fromIso, n); // -> pre-generate n days ahead
 ```
 
 **Timezone & DST:** all wall-clock math uses Luxon. A daily 08:00 reminder
-stays at 08:00 *local* time even across a DST transition — the underlying UTC
+stays at 08:00 _local_ time even across a DST transition — the underlying UTC
 instant shifts by an hour, which is correct. See the DST tests in
 `src/tests/scheduler.test.ts`.
 
@@ -275,7 +275,7 @@ store release.
   (`meditrack.db`). The app has no runtime network dependency.
 - **Secure storage:** sensitive flags (biometric-lock preference, a reserved
   future sync token) use `expo-secure-store` — the OS Keychain / Keystore.
-- **Notification permission** is requested *after* an in-app rationale screen
+- **Notification permission** is requested _after_ an in-app rationale screen
   explaining why and that reminders are local.
 - **Immutable history:** `logs` rows are append-only — corrections add a new
   entry, never rewrite, keeping an honest adherence trail.
@@ -288,12 +288,12 @@ store release.
 
 ## Expo managed-workflow limitations
 
-| Concern | Limitation | MediTrack's mitigation |
-|---------|-----------|------------------------|
-| iOS pending-notification cap (~64) | Can't pre-schedule months of reminders | Rolling 14-day notification window; occurrences live in SQLite, refreshed on launch |
-| Android exact alarms / OEM battery killers | Aggressive OEMs may delay notifications | `SCHEDULE_EXACT_ALARM` permission + high-importance channel; for guaranteed delivery, swap in **Notifee** (requires a development build, not Expo Go) |
-| Device reboot | Pending OS notifications survive reboot on both platforms; `RECEIVE_BOOT_COMPLETED` is declared. App also re-syncs the window on next launch | `ensureHorizon()` on every cold start |
-| Background re-computation | Managed workflow has limited background execution | Schedules are recomputed on app launch rather than via a background task; **expo-task-manager** can be added later if needed |
+| Concern                                    | Limitation                                                                                                                                   | MediTrack's mitigation                                                                                                                                |
+| ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| iOS pending-notification cap (~64)         | Can't pre-schedule months of reminders                                                                                                       | Rolling 14-day notification window; occurrences live in SQLite, refreshed on launch                                                                   |
+| Android exact alarms / OEM battery killers | Aggressive OEMs may delay notifications                                                                                                      | `SCHEDULE_EXACT_ALARM` permission + high-importance channel; for guaranteed delivery, swap in **Notifee** (requires a development build, not Expo Go) |
+| Device reboot                              | Pending OS notifications survive reboot on both platforms; `RECEIVE_BOOT_COMPLETED` is declared. App also re-syncs the window on next launch | `ensureHorizon()` on every cold start                                                                                                                 |
+| Background re-computation                  | Managed workflow has limited background execution                                                                                            | Schedules are recomputed on app launch rather than via a background task; **expo-task-manager** can be added later if needed                          |
 
 If a feature truly needs deeper native control (e.g. full-screen alarm-style
 reminders), migrate to a **development build** and add **Notifee** — the

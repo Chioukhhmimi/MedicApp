@@ -57,7 +57,9 @@ const SheetInner = forwardRef<SheetRef, Props>(
         {...rest}
       >
         {closeIcon ? (
-          <BottomSheetView style={{ paddingHorizontal: spacing[16], paddingTop: spacing[16] }}>
+          <BottomSheetView
+            style={{ paddingHorizontal: spacing[16], paddingTop: spacing[16] }}
+          >
             <Pressable
               onPress={() => sheetRef.current?.dismiss()}
               minSize={44}
@@ -73,21 +75,32 @@ const SheetInner = forwardRef<SheetRef, Props>(
                 justifyContent: 'center',
               }}
             >
-              <Icon icon={Cancel01Icon} size={spacing[20]} color={theme.inkMuted} strokeWidth={2} />
+              <Icon
+                icon={Cancel01Icon}
+                size={spacing[20]}
+                color={theme.inkMuted}
+                strokeWidth={2}
+              />
             </Pressable>
           </BottomSheetView>
         ) : null}
         {title ? (
-          <BottomSheetView style={{ paddingHorizontal: spacing[16], paddingTop: spacing[8] }}>
+          <BottomSheetView
+            style={{ paddingHorizontal: spacing[16], paddingTop: spacing[8] }}
+          >
             <Text variant="title">{title}</Text>
           </BottomSheetView>
         ) : null}
         {scroll ? (
-          <BottomSheetScrollView contentContainerStyle={{ padding: spacing[16], paddingBottom: 40 }}>
+          <BottomSheetScrollView
+            contentContainerStyle={{ padding: spacing[16], paddingBottom: 40 }}
+          >
             {children}
           </BottomSheetScrollView>
         ) : (
-          <BottomSheetView style={{ padding: spacing[16], paddingBottom: 40 }}>{children}</BottomSheetView>
+          <BottomSheetView style={{ padding: spacing[16], paddingBottom: 40 }}>
+            {children}
+          </BottomSheetView>
         )}
       </BottomSheetModal>
     );
